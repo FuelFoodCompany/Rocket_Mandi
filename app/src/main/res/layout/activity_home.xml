@@ -38,6 +38,13 @@
     android:layout_weight="9.2"
     >
 
+    <android.support.v4.view.PagerTabStrip
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pager_option"
+        android:layout_gravity="top"
+        style="@style/viewPagerTitleStrip" >
+    </android.support.v4.view.PagerTabStrip>
     </android.support.v4.view.ViewPager>
 
     <LinearLayout

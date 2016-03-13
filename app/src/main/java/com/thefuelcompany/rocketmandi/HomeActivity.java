@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 public class HomeActivity extends  FragmentActivity {
@@ -23,7 +23,7 @@ public class HomeActivity extends  FragmentActivity {
      //   modelObject = new RocketMandiModel();
     }
 
-    class MyAdapter extends FragmentPagerAdapter{
+    class MyAdapter extends FragmentStatePagerAdapter {
 
         public MyAdapter(FragmentManager fm) {
             super(fm);
@@ -52,6 +52,17 @@ public class HomeActivity extends  FragmentActivity {
         @Override
         public int getCount() {
             return 2;
+        }
+
+        public CharSequence getPageTitle(int position){
+            String title = new String();
+            if(position==0){
+                return "सब्जियां";
+            }
+            if(position==1){
+                return "फल";
+            }
+            return null;
         }
     }
 
