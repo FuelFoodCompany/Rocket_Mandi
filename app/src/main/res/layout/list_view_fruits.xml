@@ -1,57 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="100dp"
     android:weightSum="10"
-    android:id="@+id/fruits_list_outer_layout">
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    >
 
     <ImageView
         android:id="@+id/image_view_fruits"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/individual_height_of_product_image"
         android:layout_weight="2"
+        android:clickable="false"
+        android:layout_gravity="center"
         />
 
     <LinearLayout
-        android:id="@+id/fruits_name_and_rate_outer_layout"
+        android:id="@+id/fruit_name_and_rate_outer_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="7"
         android:orientation="vertical"
-        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:clickable="false"
         >
         <TextView
-            android:id="@+id/text_view_fruits_name"
+            android:id="@+id/text_view_fruit_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ksdlffds"/>
+            android:textSize="@dimen/product_name_in_list_view_size"
+            android:clickable="false"
+            android:layout_gravity="center"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:maxWidth="@dimen/max_width_product_name_in_list_view" />
         <TextView
-            android:id="@+id/text_view_fruits_rate"
+            android:id="@+id/text_view_fruit_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="kldsjfa"
+            android:clickable="false"
+            android:layout_gravity="center"
+            android:textStyle="bold"
             />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/fruits_amount_and_add_symbol_outer_layout"
+        android:id="@+id/fruit_amount_and_add_symbol_outer_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:weightSum="10"
-        android:layout_weight="4"
+        android:layout_height="match_parent"
+        android:weightSum="9"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
         >
         <TextView
-            android:id="@+id/text_view_fruits_amount"
-            android:layout_width="wrap_content"
+            android:id="@+id/list_view_fruit_add_symbol"
+            android:layout_width="@dimen/add_subtract_symbol_layout_width"
             android:layout_height="wrap_content"
-            android:text="sajdlfkas;"
-            android:layout_weight="5"
-            android:gravity="center"/>
+            android:textSize="@dimen/add_subtract_symbol_text_size"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:gravity="center"
+            android:background="@drawable/rounded_corner"
+            android:textAlignment="gravity"/>
         <TextView
-            android:id="@+id/text_view_fruits_add_symbol"
+            android:id="@+id/text_view_fruit_amount_ordered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="klajflkajd"
-            android:layout_weight="5"
-            android:gravity="center"/>
+            android:text="2;"
+            android:textSize="@dimen/add_subtract_symbol_text_size"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textAlignment="gravity"/>
+        <TextView
+            android:id="@+id/list_view_fruit_subtract_symbol"
+            android:layout_width="@dimen/add_subtract_symbol_layout_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/add_subtract_symbol_text_size"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="-"
+            android:background="@drawable/rounded_corner"
+            android:textAlignment="gravity"/>
     </LinearLayout>
 </LinearLayout>

@@ -3,4 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="app_title_text_size">25dp</dimen>
+    <dimen name="individual_height_of_product_image">50dp</dimen>
+    <dimen name="product_name_in_list_view_size">18dp</dimen>
+    <dimen name="max_width_product_name_in_list_view">150dp</dimen>
+    <dimen name="add_subtract_symbol_layout_width">20dp</dimen>
+    <dimen name="add_subtract_symbol_text_size">15dp</dimen>
+    <dimen name="zero_size_margin">0dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

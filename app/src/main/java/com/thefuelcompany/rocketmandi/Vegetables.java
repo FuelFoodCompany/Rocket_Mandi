@@ -8,19 +8,15 @@ public class Vegetables {
 
     private int vegetableIcon;
     private String vegetableName;
-    private int vegetablePrice;
-    private int vegetableQuantityAdded;
-    private String vegetableAddIcon;
+    private String vegetablePrice;
     private int vegetableId;
 
-    public Vegetables (int vegetableIcon , String vegetableName, int vegetablePrice, int vegetableQuantityAdded
-    , String vegetableAddIcon, int vegetableId){
+    public Vegetables (int vegetableIcon , String vegetableName, String vegetablePrice
+    , int vegetableId){
         super();
         this.vegetableIcon = vegetableIcon;
         this.vegetableName = vegetableName;
         this.vegetablePrice = vegetablePrice;
-        this.vegetableQuantityAdded = vegetableQuantityAdded;
-        this.vegetableAddIcon = vegetableAddIcon;
         this.vegetableId = vegetableId;
 
     }
@@ -30,21 +26,11 @@ public class Vegetables {
     public String getVegetableName(){
         return vegetableName;
     }
-    public int getVegetablePrice(){
+    public String getVegetablePrice(){
         return vegetablePrice;
-    }
-    public int getVegetableQuantityAdded(){
-        return vegetableQuantityAdded;
-    }
-    public String getVegetableAddIcon(){
-        return vegetableAddIcon;
     }
     public int getVegetableId(){
         return vegetableId;
-    }
-
-    public void setVegetableQuantityAdded(int quantityAdded){
-        this.vegetableQuantityAdded = quantityAdded;
     }
 
 }

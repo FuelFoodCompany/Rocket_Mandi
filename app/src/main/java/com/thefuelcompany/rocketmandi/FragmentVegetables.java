@@ -29,6 +29,8 @@ import static com.thefuelcompany.rocketmandi.R.color.colorAppTheme;
 public class FragmentVegetables extends Fragment {
     private List<Vegetables> vegetablesList = new ArrayList<Vegetables>();
     private View v;
+    // get the object of rocket mandi class from home activity , this is only for time pass
+    private RocketMandiModel modelObject = new RocketMandiModel();
 
  public View onCreateView(LayoutInflater inflater, ViewGroup container , Bundle saveInstanceState) {
 
@@ -39,14 +41,30 @@ public class FragmentVegetables extends Fragment {
  }
 
 
-
+    /**
+     * The method will populate vegetable list with objects of vegetables class.
+     * The amount of product added, add and subtract sign are not required to be populated as they are
+     * already executed in xml file.
+     */
     private void populateVegetableList(){
-        vegetablesList.add(new Vegetables(R.drawable.contacts_filled_50, "onion" , 50, 0, "+", 101));
-        vegetablesList.add(new Vegetables(R.drawable.contacts_filled_50, "brinjal" , 70, 0,"+", 102));
-        vegetablesList.add(new Vegetables(R.drawable.contacts_filled_50, "capsicum" , 50, 0, "+", 103));
-        vegetablesList.add(new Vegetables(R.drawable.contacts_filled_50, "ladyfinger (Grade A) murga", 50, 0, "+", 104));
-        vegetablesList.add(new Vegetables(R.drawable.home_50, "potato", 80, 0, "+", 105));
+        List<Integer> vegetableIconList;
+        vegetableIconList = modelObject.getVegetableIconList();
+
+        List<String> vegetableNameList;
+        vegetableNameList = modelObject.getVegetableNameList();
+
+        List<String> vegetablePriceRateList;
+        vegetablePriceRateList = modelObject.getVegetablePriceRateList();
+
+        List<Integer> vegetableIdList;
+        vegetableIdList = modelObject.getVegetableIdList();
+
+        for(int i=0; i<vegetableIconList.size(); i++){
+         vegetablesList.add(new Vegetables(vegetableIconList.get(i),vegetableNameList.get(i),vegetablePriceRateList.get(i),vegetableIdList.get(i)));
+        }
+
     }
+
 
     private void populateVegetableListView() {
         ArrayAdapter<Vegetables> vegetableAdapter = new MyListAdapter();
@@ -60,7 +78,7 @@ public class FragmentVegetables extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent){
+        public View getView(final int position, View convertView, ViewGroup parent){
             View itemView = convertView;
             if(itemView == null){
                 itemView = getActivity().getLayoutInflater().inflate(R.layout.list_view_vegetables, parent, false);
@@ -75,17 +93,29 @@ public class FragmentVegetables extends Fragment {
             TextView vegetableNameTextView = (TextView) itemView.findViewById(R.id.text_view_vegetable_name);
             vegetableNameTextView.setText(currentVeggi.getVegetableName());
 
-            //Adding sign
-            TextView vegetableAddIconSymbolTextView = (TextView) itemView.findViewById(R.id.image_view_vegetable_add_symbol);
-            vegetableAddIconSymbolTextView.setText(currentVeggi.getVegetableAddIcon());
+            //Add rate
+            TextView vegetablePriceRateTextView = (TextView) itemView.findViewById(R.id.text_view_vegetable_rate);
+            vegetablePriceRateTextView.setText(currentVeggi.getVegetablePrice());
 
+            //Adding sign
+            TextView vegetableAddIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_vegetable_add_symbol);
             vegetableAddIconSymbolTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view){
+                public void onClick(View view) {
 
-                    Toast.makeText(getActivity().getApplicationContext(), "Clicked" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Clicked " + position, Toast.LENGTH_SHORT).show();
                 }
             });
+
+            TextView vegetableSubtractIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_vegetable_subtract_symbol);
+            vegetableSubtractIconSymbolTextView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick (View view){
+                    Toast.makeText(getActivity().getApplicationContext(), "Subtract clicked "+ position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
 
             return itemView;
         }

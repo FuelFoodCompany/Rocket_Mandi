@@ -5,28 +5,28 @@
     android:id="@+id/home_screen_layout">
 
     <LinearLayout
-        android:id="@+id/title_layout"
+        android:id="@+id/home_screen_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/colorAppTheme"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="@dimen/zero_size_margin"
         android:layout_weight="0.4">
     <TextView
-        android:id="@+id/title_text"
+        android:id="@+id/home_screen_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rocket Mandi"
-        android:textColor="@color/colorTextWhite"
+        android:text="@string/app_name"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:textSize="@dimen/app_title_text_size" />
         <TextView
             android:id="@+id/subtitle_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="सब से तेज सब से अच्छी"
+            android:text="@string/subtitle_text_hindi"
             android:textSize="15dp"
-            android:textColor="@color/colorTextWhite" />
+            android:textColor="@color/colorWhite" />
 
     </LinearLayout>
 <android.support.v4.view.ViewPager
@@ -71,7 +71,7 @@
                 android:id="@+id/toolbar_home_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="HOME" />
+                android:text="@string/toolbar_home_text_english" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/toolbar_shopping_cart_layout"
@@ -89,7 +89,7 @@
                 android:id="@+id/toolbar_shopping_cart_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SHOPPING CART"/>
+                android:text="@string/toolbar_shopping_cart_text_english"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/toolbar_profile_layout"
@@ -107,7 +107,7 @@
                 android:id="@+id/toolbar_profile_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PROFILE"/>
+                android:text="@string/toolbar_profile_text_english"/>
         </LinearLayout>
     </LinearLayout>
 

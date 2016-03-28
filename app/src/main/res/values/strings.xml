@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Rocket Mandi</string>
+    <string name="subtitle_text_hindi">सब से तेज सब से अच्छी</string>
+    <string name="toolbar_home_text_english">Home</string>
+    <string name="toolbar_shopping_cart_text_english">Shopping Cart</string>
+    <string name="toolbar_profile_text_english">Account</string>
+    <string name="title_activity_log_in">LogInActivity</string>
 </resources>

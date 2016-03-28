@@ -1,5 +1,6 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -10,17 +11,27 @@ import android.support.v4.view.ViewPager;
 public class HomeActivity extends  FragmentActivity {
 
     ViewPager viewPager = null;
-
     //private String username;
    // private RocketMandiModel modelObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        viewPager.setAdapter(new MyAdapter(fragmentManager));
-     //   modelObject = new RocketMandiModel();
+        // check if someone is logged in or not
+        if(false){
+
+            setContentView(R.layout.activity_home);
+            viewPager = (ViewPager) findViewById(R.id.pager);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            viewPager.setAdapter(new MyAdapter(fragmentManager));
+            //   modelObject = new RocketMandiModel();
+
+            //start log in
+        }else {
+
+            Intent LogInActivityIntent= new Intent(HomeActivity.this,LogInActivity.class);
+            startActivity(LogInActivityIntent);
+
+        }
     }
 
     class MyAdapter extends FragmentStatePagerAdapter {

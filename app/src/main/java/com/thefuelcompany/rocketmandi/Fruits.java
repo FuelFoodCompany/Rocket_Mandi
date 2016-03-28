@@ -6,45 +6,32 @@ package com.thefuelcompany.rocketmandi;
  */
 public class Fruits {
 
+
     private int fruitIcon;
     private String fruitName;
-    private int fruitPrice;
-    private int fruitQuantityAdded;
-    private int fruitAddIcon;
+    private String fruitPrice;
     private int fruitId;
 
-    public Fruits (int fruitIcon , String fruitName, int fruitPrice, int fruitQuantityAdded
-            , int fruitAddIcon, int fruitId){
+    public Fruits (int fruitIcon , String fruitName, String fruitPrice
+            , int fruitId){
         super();
         this.fruitIcon = fruitIcon;
         this.fruitName = fruitName;
         this.fruitPrice = fruitPrice;
-        this.fruitQuantityAdded = fruitQuantityAdded;
-        this.fruitAddIcon = fruitAddIcon;
         this.fruitId = fruitId;
 
     }
-    public int getfruitIcon(){
+    public int getFruitIcon(){
         return fruitIcon;
     }
-    public String getfruitName(){
+    public String getFruitName(){
         return fruitName;
     }
-    public int getfruitPrice(){
+    public String getFruitPrice(){
         return fruitPrice;
     }
-    public int getfruitQuantityAdded(){
-        return fruitQuantityAdded;
-    }
-    public int getfruitAddIcon(){
-        return fruitAddIcon;
-    }
-    public int getVegetableId(){
+    public int getFruitId(){
         return fruitId;
-    }
-
-    public void setfruitQuantityAdded(int quantityAdded){
-        this.fruitQuantityAdded = quantityAdded;
     }
 
 }
