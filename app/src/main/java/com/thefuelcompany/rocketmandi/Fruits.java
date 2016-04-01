@@ -10,14 +10,16 @@ public class Fruits {
     private int fruitIcon;
     private String fruitName;
     private String fruitPrice;
+    private Integer fruitQuantity;
     private int fruitId;
 
-    public Fruits (int fruitIcon , String fruitName, String fruitPrice
+    public Fruits (int fruitIcon , String fruitName, String fruitPrice, Integer fruitQuantity
             , int fruitId){
         super();
         this.fruitIcon = fruitIcon;
         this.fruitName = fruitName;
         this.fruitPrice = fruitPrice;
+        this.fruitQuantity = fruitQuantity;
         this.fruitId = fruitId;
 
     }
@@ -29,6 +31,9 @@ public class Fruits {
     }
     public String getFruitPrice(){
         return fruitPrice;
+    }
+    public Integer getFruitQuantity(){
+        return fruitQuantity;
     }
     public int getFruitId(){
         return fruitId;

@@ -29,12 +29,17 @@ import static com.thefuelcompany.rocketmandi.R.color.colorAppTheme;
 public class FragmentVegetables extends Fragment {
     private List<Vegetables> vegetablesList = new ArrayList<Vegetables>();
     private View v;
-    // get the object of rocket mandi class from home activity , this is only for time pass
-    private RocketMandiModel modelObject = new RocketMandiModel();
+    private RocketMandiModel modelObject;
+    List<Integer> vegetableQuantityList;
 
  public View onCreateView(LayoutInflater inflater, ViewGroup container , Bundle saveInstanceState) {
 
+     /**
+      * I do not know how inflator and shit works, I learned it from you tube and it
+      * just work.
+      */
      v = inflater.inflate(R.layout.fragment_vegetables, container, false);
+     setModelObject();
      populateVegetableList();
      populateVegetableListView();
      return v;
@@ -45,6 +50,8 @@ public class FragmentVegetables extends Fragment {
      * The method will populate vegetable list with objects of vegetables class.
      * The amount of product added, add and subtract sign are not required to be populated as they are
      * already executed in xml file.
+     * The method will get individual lists from Model, and then make a new list of Vegetable class
+     * objects which will store data of each individual row of vegetable and fruit.
      */
     private void populateVegetableList(){
         List<Integer> vegetableIconList;
@@ -56,16 +63,24 @@ public class FragmentVegetables extends Fragment {
         List<String> vegetablePriceRateList;
         vegetablePriceRateList = modelObject.getVegetablePriceRateList();
 
+        // update this in fruits also
+
+        vegetableQuantityList = modelObject.getVegetableQuantityList();
+
         List<Integer> vegetableIdList;
         vegetableIdList = modelObject.getVegetableIdList();
 
         for(int i=0; i<vegetableIconList.size(); i++){
-         vegetablesList.add(new Vegetables(vegetableIconList.get(i),vegetableNameList.get(i),vegetablePriceRateList.get(i),vegetableIdList.get(i)));
+         vegetablesList.add(new Vegetables(vegetableIconList.get(i),vegetableNameList.get(i),vegetablePriceRateList.get(i),vegetableQuantityList.get(i),vegetableIdList.get(i)));
         }
 
     }
 
 
+    /**
+     *The method and the inner class will populate the inflator with the vegetables.
+     * I do not know how this work. Do not touch it.
+     */
     private void populateVegetableListView() {
         ArrayAdapter<Vegetables> vegetableAdapter = new MyListAdapter();
         ListView vegetableListView = (ListView) v.findViewById(R.id.vegetables_list_view);
@@ -97,12 +112,17 @@ public class FragmentVegetables extends Fragment {
             TextView vegetablePriceRateTextView = (TextView) itemView.findViewById(R.id.text_view_vegetable_rate);
             vegetablePriceRateTextView.setText(currentVeggi.getVegetablePrice());
 
+            //Add quantity
+            final TextView vegetableQuantityAddedTextView = (TextView) itemView.findViewById(R.id.text_view_vegetable_amount_ordered);
+            vegetableQuantityAddedTextView.setText(currentVeggi.getVegetableQuantity()+"");
+
             //Adding sign
             TextView vegetableAddIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_vegetable_add_symbol);
             vegetableAddIconSymbolTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
+                    addVegetableQuantity(position, vegetableQuantityAddedTextView);
                     Toast.makeText(getActivity().getApplicationContext(), "Clicked " + position, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -111,6 +131,7 @@ public class FragmentVegetables extends Fragment {
             vegetableSubtractIconSymbolTextView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View view){
+                    subtractVegetableQuantity(position , vegetableQuantityAddedTextView);
                     Toast.makeText(getActivity().getApplicationContext(), "Subtract clicked "+ position, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -120,6 +141,31 @@ public class FragmentVegetables extends Fragment {
             return itemView;
         }
 
+    }
+
+    private void addVegetableQuantity(int position, TextView textView){
+        Integer quantityBefore = vegetableQuantityList.get(position);
+        Integer quantityNew = quantityBefore+1;
+        vegetableQuantityList.set(position, quantityNew);
+        modelObject.changeVegetableQuantity(position, quantityNew);
+        textView.setText(quantityNew+"");
+    }
+
+    private void subtractVegetableQuantity(int position, TextView textView){
+        Integer quantityBefore = vegetableQuantityList.get(position);
+        Integer quantityNew;
+        if (quantityBefore > 0){
+            quantityNew = quantityBefore-1;
+        }else {
+            quantityNew = quantityBefore;
+        }
+        vegetableQuantityList.set(position, quantityNew);
+        modelObject.changeVegetableQuantity(position, quantityNew);
+        textView.setText(quantityNew+"");
+    }
+
+    private void setModelObject(){
+       modelObject = (RocketMandiModel) getArguments().getSerializable("key");
     }
 
 }

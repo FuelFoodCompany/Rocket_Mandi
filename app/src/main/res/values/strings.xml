@@ -5,4 +5,5 @@
     <string name="toolbar_shopping_cart_text_english">Shopping Cart</string>
     <string name="toolbar_profile_text_english">Account</string>
     <string name="title_activity_log_in">LogInActivity</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

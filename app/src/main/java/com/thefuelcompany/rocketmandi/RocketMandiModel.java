@@ -1,15 +1,24 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.widget.Toast;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by pradumanpraduman on 11/03/16.
  */
-public class RocketMandiModel {
+public class RocketMandiModel implements Serializable{
 
+    // user name and mobile number will be same
     private String username;
     private String fullName;
+    private List<Integer> vegetableQuantityList;
+    private List<Integer> fruitQuantityList;
+
+
+    private int i = 0;
 
     /**
      *
@@ -35,6 +44,13 @@ public class RocketMandiModel {
         vegetablePriceRateList.add("50");
         vegetablePriceRateList.add("100");
         return vegetablePriceRateList;
+    }
+
+    public List<Integer> getVegetableQuantityList(){
+        vegetableQuantityList= new ArrayList<Integer>();
+        vegetableQuantityList.add(0);
+        vegetableQuantityList.add(0);
+        return vegetableQuantityList;
     }
 
     public List<Integer> getVegetableIdList(){
@@ -66,6 +82,13 @@ public class RocketMandiModel {
         return vegetablePriceRateList;
     }
 
+    public List<Integer> getFruitQuantityList(){
+        fruitQuantityList = new ArrayList<Integer>();
+        fruitQuantityList.add(1);
+        fruitQuantityList.add(2);
+        return fruitQuantityList;
+    }
+
     public List<Integer> getFruitIdList(){
         List<Integer> vegetableIdList = new ArrayList<Integer>();
         vegetableIdList.add(101);
@@ -73,6 +96,19 @@ public class RocketMandiModel {
         return vegetableIdList;
     }
 
+       public void changeVegetableQuantity(int position, Integer quantityNew){
 
+        vegetableQuantityList.set(position, quantityNew);
+    }
+
+    public void changeFruitQuantity(int position, Integer quantityNew){
+
+        fruitQuantityList.set(position, quantityNew);
+    }
+
+    public int checkModelObject(){
+        i=i+1;
+        return i;
+    }
 
 }

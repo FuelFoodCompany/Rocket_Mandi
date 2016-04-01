@@ -20,11 +20,12 @@ public class FragmentFruits extends Fragment {
 
     private List<Fruits> fruitList = new ArrayList<Fruits>();
     private View v;
-    // get the object of rocket mandi class from home activity , this is only for time pass
-    private RocketMandiModel modelObject = new RocketMandiModel();
+    private RocketMandiModel modelObject;
+    List<Integer> fruitQuantityList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container , Bundle saveInstanceState){
         v = inflater.inflate(R.layout.fragment_fruits, container, false);
+        setModelObject();
         populateFruitsList();
         populateFruitsView();
         return v;
@@ -34,6 +35,7 @@ public class FragmentFruits extends Fragment {
      * The method will populate vegetable list with objects of vegetables class.
      * The amount of product added, add and subtract sign are not required to be populated as they are
      * already executed in xml file.
+     * The stuff is alike as in VegetableFragment.
      */
     private void populateFruitsList(){
         List<Integer> fruitIconList;
@@ -45,11 +47,14 @@ public class FragmentFruits extends Fragment {
         List<String> fruitPriceRateList;
         fruitPriceRateList = modelObject.getFruitPriceRateList();
 
+
+        fruitQuantityList = modelObject.getFruitQuantityList();
+
         List<Integer> fruitIdList;
         fruitIdList = modelObject.getFruitIdList();
 
         for(int i=0; i<fruitIconList.size(); i++){
-            fruitList.add(new Fruits(fruitIconList.get(i),fruitNameList.get(i),fruitPriceRateList.get(i),fruitIdList.get(i)));
+            fruitList.add(new Fruits(fruitIconList.get(i),fruitNameList.get(i),fruitPriceRateList.get(i),fruitQuantityList.get(i),fruitIdList.get(i)));
         }
 
     }
@@ -85,13 +90,17 @@ public class FragmentFruits extends Fragment {
             TextView fruitPriceRateTextView = (TextView) itemView.findViewById(R.id.text_view_fruit_rate);
             fruitPriceRateTextView.setText(currentFruit.getFruitPrice());
 
+            //Add quantity
+            final TextView fruitQuantityAddedTextView = (TextView) itemView.findViewById(R.id.text_view_fruit_amount_ordered);
+            fruitQuantityAddedTextView.setText(currentFruit.getFruitQuantity()+"");
+
             //Adding sign
             TextView fruitAddIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_fruit_add_symbol);
             fruitAddIconSymbolTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    Toast.makeText(getActivity().getApplicationContext(), "Clicked add" + position, Toast.LENGTH_SHORT).show();
+                    addFruitQuantity(position, fruitQuantityAddedTextView);
+                    Toast.makeText(getActivity().getApplicationContext(), "Clicked add", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -99,6 +108,7 @@ public class FragmentFruits extends Fragment {
             fruitSubtractIconSymbolTextView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View view){
+                    subtractFruitQuantity(position, fruitQuantityAddedTextView);
                     Toast.makeText(getActivity().getApplicationContext(), "Subtract clicked fruit "+ position, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -108,5 +118,31 @@ public class FragmentFruits extends Fragment {
             return itemView;
         }
 
+
+    }
+
+    private void addFruitQuantity(int position, TextView textView){
+        Integer quantityBefore = fruitQuantityList.get(position);
+        Integer quantityNew = quantityBefore+1;
+        fruitQuantityList.set(position, quantityNew);
+        modelObject.changeFruitQuantity(position, quantityNew);
+        textView.setText(quantityNew+"");
+    }
+
+    private void subtractFruitQuantity(int position, TextView textView){
+        Integer quantityBefore = fruitQuantityList.get(position);
+        Integer quantityNew;
+        if (quantityBefore > 0){
+            quantityNew = quantityBefore-1;
+        }else {
+            quantityNew = quantityBefore;
+        }
+        fruitQuantityList.set(position, quantityNew);
+        modelObject.changeFruitQuantity(position, quantityNew);
+        textView.setText(quantityNew + "");
+    }
+
+    private void setModelObject(){
+        modelObject = (RocketMandiModel) getArguments().getSerializable("key");
     }
 }

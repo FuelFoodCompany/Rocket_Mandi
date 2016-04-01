@@ -7,31 +7,36 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 public class HomeActivity extends  FragmentActivity {
 
+    RocketMandiModel modelObject = new RocketMandiModel();
     ViewPager viewPager = null;
+    ViewFlipper homeActivityViewFlipper;
+    ImageView homeImageView;
+    ImageView shoppingCartImageView;
+    ImageView accountImageView;
     //private String username;
-   // private RocketMandiModel modelObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // check if someone is logged in or not
-        if(false){
 
             setContentView(R.layout.activity_home);
+            setFlipper();
+            setHomeImageView();
+            setShoppingCartImageView();
+            setAccountImageView();
             viewPager = (ViewPager) findViewById(R.id.pager);
             FragmentManager fragmentManager = getSupportFragmentManager();
             viewPager.setAdapter(new MyAdapter(fragmentManager));
-            //   modelObject = new RocketMandiModel();
 
             //start log in
-        }else {
 
-            Intent LogInActivityIntent= new Intent(HomeActivity.this,LogInActivity.class);
-            startActivity(LogInActivityIntent);
-
-        }
     }
 
     class MyAdapter extends FragmentStatePagerAdapter {
@@ -50,9 +55,15 @@ public class HomeActivity extends  FragmentActivity {
             Fragment fragment = null;
             if(position == 0){
                 fragment = new FragmentVegetables();
+                Bundle args = new Bundle();
+                args.putSerializable("key", modelObject);
+                fragment.setArguments(args);
             }
             if(position==1){
                 fragment = new FragmentFruits();
+                Bundle args = new Bundle();
+                args.putSerializable("key", modelObject);
+                fragment.setArguments(args);
             }
             return fragment;
         }
@@ -77,5 +88,44 @@ public class HomeActivity extends  FragmentActivity {
         }
     }
 
+    private void setFlipper(){
+        homeActivityViewFlipper = (ViewFlipper) findViewById(R.id.home_screen_view_flipper);
+    }
+
+    private void setHomeImageView(){
+        homeImageView = (ImageView) findViewById(R.id.toolbar_home_image);
+        homeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               homeActivityViewFlipper.setDisplayedChild(0);
+
+            }
+        });
+    }
+
+    private void setShoppingCartImageView(){
+        shoppingCartImageView = (ImageView) findViewById(R.id.toolbar_shopping_cart_image);
+        shoppingCartImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                homeActivityViewFlipper.setDisplayedChild(1);
+
+            }
+        });
+    }
+
+    private void setAccountImageView(){
+        accountImageView = (ImageView) findViewById(R.id.toolbar_profile_image);
+        accountImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                homeActivityViewFlipper.setDisplayedChild(2);
+
+            }
+        });
+    }
 
 }

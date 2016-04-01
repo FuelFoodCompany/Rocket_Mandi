@@ -29,13 +29,18 @@
             android:textColor="@color/colorWhite" />
 
     </LinearLayout>
+    <ViewFlipper
+        android:id="@+id/home_screen_view_flipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="9.2"
+        >
 <android.support.v4.view.ViewPager
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:id="@+id/pager"
     android:layout_width="match_parent"
-    android:layout_weight="9.2"
     >
 
     <android.support.v4.view.PagerTabStrip
@@ -46,7 +51,117 @@
         style="@style/viewPagerTitleStrip" >
     </android.support.v4.view.PagerTabStrip>
     </android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:id="@+id/shopping_cart_layout_in_view_flipper"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="This is My Account"/>
 
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/account_layout_in_view_flipper"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/name_in_my_account_outer_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+                <TextView
+                    android:id="@+id/name_in_my_account_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="Praduman"/>
+                <TextView
+                    android:id="@+id/edit_text_for_name_in_my_account"
+                    android:layout_weight="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EDIT"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/phone_number_in_my_account_outer_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+                <TextView
+                    android:id="@+id/phone_in_my_account_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text="991330070"/>
+                <TextView
+                    android:id="@+id/edit_text_for_phone_in_my_account"
+                    android:layout_weight="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EDIT"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/delivery_location_in_my_account_outer_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+                <TextView
+                    android:id="@+id/delivery_location_text_in_my_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="delivery location"
+                    android:layout_weight="8"/>
+                <TextView
+                    android:id="@+id/delivery_location_arrow_in_my_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    >"
+                    android:layout_weight="2"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/my_order_in_my_account_outer_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+                <TextView
+                    android:id="@+id/my_order_text_in_my_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="my orders"
+                    android:layout_weight="8"/>
+                <TextView
+                    android:id="@+id/my_order_arrow_in_my_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    >"
+                    android:layout_weight="2"/>
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/log_out_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="log out"/>
+        </LinearLayout>
+
+
+    </ViewFlipper>
     <LinearLayout
         android:id="@+id/toolbar_layout"
         android:orientation="horizontal"

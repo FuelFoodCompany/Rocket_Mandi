@@ -1,5 +1,6 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,8 @@ public class LogInActivity extends AppCompatActivity {
     String repeatPasswordAtSignUp;
 
     ViewFlipper LogInViewFlipper;
+    Intent intent;
+    RocketMandiModel rocketMandiModel;
 
 
     @Override
@@ -45,6 +48,7 @@ public class LogInActivity extends AppCompatActivity {
         setFlipper();
         setLogInButton();
         setSignUpTextViewAtLogIn();
+        startHomeActivity();
         
     }
 
@@ -194,5 +198,11 @@ public class LogInActivity extends AppCompatActivity {
 
     private boolean checkOTP(){
         return false;
+    }
+
+
+    private void startHomeActivity(){
+        Intent homeActivityIntent = new Intent(LogInActivity.this, HomeActivity.class);
+        startActivity(homeActivityIntent);
     }
 }
