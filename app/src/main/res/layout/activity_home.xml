@@ -56,10 +56,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
+            <ListView
+                android:id="@+id/products_orders_list_view_at_shopping_cart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="This is My Account"/>
+                android:layout_height="wrap_content">
+
+            </ListView>
 
 
         </LinearLayout>

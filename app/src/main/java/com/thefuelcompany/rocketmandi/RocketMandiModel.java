@@ -106,6 +106,30 @@ public class RocketMandiModel implements Serializable{
         fruitQuantityList.set(position, quantityNew);
     }
 
+    public List<String> getProductNameList(){
+        List<String> list = new ArrayList<String>();
+        list.add("Potato");
+        return list;
+    }
+
+    public List<String> getProductRateList(){
+        List<String> list = new ArrayList<String>();
+        list.add("Potato");
+        return list;
+    }
+
+    public List<Integer> getProductQuantityList(){
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(2);
+        return list;
+    }
+
+    public List<Integer> getTotalList(){
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(100);
+        return list;
+    }
+
     public int checkModelObject(){
         i=i+1;
         return i;

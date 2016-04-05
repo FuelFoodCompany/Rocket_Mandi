@@ -63,15 +63,10 @@ public class FragmentVegetables extends Fragment {
         List<String> vegetablePriceRateList;
         vegetablePriceRateList = modelObject.getVegetablePriceRateList();
 
-        // update this in fruits also
-
         vegetableQuantityList = modelObject.getVegetableQuantityList();
 
-        List<Integer> vegetableIdList;
-        vegetableIdList = modelObject.getVegetableIdList();
-
         for(int i=0; i<vegetableIconList.size(); i++){
-         vegetablesList.add(new Vegetables(vegetableIconList.get(i),vegetableNameList.get(i),vegetablePriceRateList.get(i),vegetableQuantityList.get(i),vegetableIdList.get(i)));
+         vegetablesList.add(new Vegetables(vegetableIconList.get(i),vegetableNameList.get(i),vegetablePriceRateList.get(i),vegetableQuantityList.get(i)));
         }
 
     }
@@ -123,16 +118,16 @@ public class FragmentVegetables extends Fragment {
                 public void onClick(View view) {
 
                     addVegetableQuantity(position, vegetableQuantityAddedTextView);
-                    Toast.makeText(getActivity().getApplicationContext(), "Clicked " + position, Toast.LENGTH_SHORT).show();
+
                 }
             });
 
+            //subtract sign
             TextView vegetableSubtractIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_vegetable_subtract_symbol);
             vegetableSubtractIconSymbolTextView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View view){
                     subtractVegetableQuantity(position , vegetableQuantityAddedTextView);
-                    Toast.makeText(getActivity().getApplicationContext(), "Subtract clicked "+ position, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -143,6 +138,12 @@ public class FragmentVegetables extends Fragment {
 
     }
 
+    /**
+     * The method will update the view with the quantity added.
+     * Also, it will update the Model class with the added quantity.
+     * @param position
+     * @param textView
+     */
     private void addVegetableQuantity(int position, TextView textView){
         Integer quantityBefore = vegetableQuantityList.get(position);
         Integer quantityNew = quantityBefore+1;
@@ -151,6 +152,12 @@ public class FragmentVegetables extends Fragment {
         textView.setText(quantityNew+"");
     }
 
+    /**
+     * The method will update the view with the quantity subtracted.
+     * Also, it will update the Model class with the subtracted quantity.
+     * @param position
+     * @param textView
+     */
     private void subtractVegetableQuantity(int position, TextView textView){
         Integer quantityBefore = vegetableQuantityList.get(position);
         Integer quantityNew;
@@ -164,6 +171,10 @@ public class FragmentVegetables extends Fragment {
         textView.setText(quantityNew+"");
     }
 
+    /**
+     * The method will retrieve the Model class object
+     * from the Bundle when instantiated.
+     */
     private void setModelObject(){
        modelObject = (RocketMandiModel) getArguments().getSerializable("key");
     }

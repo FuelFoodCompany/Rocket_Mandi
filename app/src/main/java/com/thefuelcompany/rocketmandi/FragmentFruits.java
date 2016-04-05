@@ -50,15 +50,17 @@ public class FragmentFruits extends Fragment {
 
         fruitQuantityList = modelObject.getFruitQuantityList();
 
-        List<Integer> fruitIdList;
-        fruitIdList = modelObject.getFruitIdList();
 
         for(int i=0; i<fruitIconList.size(); i++){
-            fruitList.add(new Fruits(fruitIconList.get(i),fruitNameList.get(i),fruitPriceRateList.get(i),fruitQuantityList.get(i),fruitIdList.get(i)));
+            fruitList.add(new Fruits(fruitIconList.get(i),fruitNameList.get(i),fruitPriceRateList.get(i),fruitQuantityList.get(i)));
         }
 
     }
 
+    /**
+     * I do not know what is happening here, in this method
+     * and the Adapter class
+     */
     private void populateFruitsView() {
         ArrayAdapter<Fruits> fruitAdapter = new MyListAdapter();
         ListView fruitListView = (ListView) v.findViewById(R.id.fruits_list_view);
@@ -100,7 +102,6 @@ public class FragmentFruits extends Fragment {
                 @Override
                 public void onClick(View view) {
                     addFruitQuantity(position, fruitQuantityAddedTextView);
-                    Toast.makeText(getActivity().getApplicationContext(), "Clicked add", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -109,11 +110,9 @@ public class FragmentFruits extends Fragment {
                 @Override
                 public void onClick (View view){
                     subtractFruitQuantity(position, fruitQuantityAddedTextView);
-                    Toast.makeText(getActivity().getApplicationContext(), "Subtract clicked fruit "+ position, Toast.LENGTH_SHORT).show();
+
                 }
             });
-
-
 
             return itemView;
         }
@@ -121,6 +120,12 @@ public class FragmentFruits extends Fragment {
 
     }
 
+    /**
+     * The method will update the view at the front end
+     * and update the quantity added in the model class database
+     * @param position
+     * @param textView
+     */
     private void addFruitQuantity(int position, TextView textView){
         Integer quantityBefore = fruitQuantityList.get(position);
         Integer quantityNew = quantityBefore+1;
@@ -129,6 +134,12 @@ public class FragmentFruits extends Fragment {
         textView.setText(quantityNew+"");
     }
 
+    /**
+     * The method will update the quantity subtracted at the view and update
+     * the changes at the model class in the Model class for back end
+     * @param position
+     * @param textView
+     */
     private void subtractFruitQuantity(int position, TextView textView){
         Integer quantityBefore = fruitQuantityList.get(position);
         Integer quantityNew;
@@ -142,6 +153,10 @@ public class FragmentFruits extends Fragment {
         textView.setText(quantityNew + "");
     }
 
+    /**
+     * The method will retrieve the
+     * model object from the Bundle when instantiated.
+     */
     private void setModelObject(){
         modelObject = (RocketMandiModel) getArguments().getSerializable("key");
     }

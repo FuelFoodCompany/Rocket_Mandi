@@ -1,16 +1,26 @@
 package com.thefuelcompany.rocketmandi;
 
-import android.content.Intent;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends  FragmentActivity {
 
@@ -20,22 +30,26 @@ public class HomeActivity extends  FragmentActivity {
     ImageView homeImageView;
     ImageView shoppingCartImageView;
     ImageView accountImageView;
+    ShoppingCart shoppingCart;
+    ListView  listView ;
+    public List<OrderItemDetails> ordersList = new ArrayList<OrderItemDetails>();
+    View v;
     //private String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // check if someone is logged in or not
 
-            setContentView(R.layout.activity_home);
-            setFlipper();
-            setHomeImageView();
-            setShoppingCartImageView();
-            setAccountImageView();
+        setContentView(R.layout.activity_home);
+        setShoppingCartObject();
+        setFlipper();
+        setHomeImageView();
+        setShoppingCartImageView();
+        setAccountImageView();
+
             viewPager = (ViewPager) findViewById(R.id.pager);
             FragmentManager fragmentManager = getSupportFragmentManager();
             viewPager.setAdapter(new MyAdapter(fragmentManager));
-
-            //start log in
 
     }
 
@@ -98,7 +112,7 @@ public class HomeActivity extends  FragmentActivity {
             @Override
             public void onClick(View v) {
 
-               homeActivityViewFlipper.setDisplayedChild(0);
+                homeActivityViewFlipper.setDisplayedChild(0);
 
             }
         });
@@ -111,6 +125,8 @@ public class HomeActivity extends  FragmentActivity {
             public void onClick(View v) {
 
                 homeActivityViewFlipper.setDisplayedChild(1);
+                updateOrdersList();
+                populateProductListView();
 
             }
         });
@@ -126,6 +142,75 @@ public class HomeActivity extends  FragmentActivity {
 
             }
         });
+    }
+
+    private void setShoppingCartObject(){
+        shoppingCart = new ShoppingCart(modelObject);
+    }
+
+    public void updateOrdersList(){
+        Toast.makeText(this, "Update", Toast.LENGTH_SHORT).show();
+
+        Adptr adp = new Adptr(this);
+        listView = (ListView) findViewById(R.id.products_orders_list_view_at_shopping_cart);
+        listView.setAdapter(adp);
+
+        List<String> productNameList;
+        productNameList = modelObject.getProductNameList();
+
+        List<String> productPriceRate;
+        productPriceRate = modelObject.getProductRateList();
+
+        List<Integer> productQuantityList;
+        productQuantityList = modelObject.getProductQuantityList();
+
+        List<Integer> totalList;
+        totalList = modelObject.getTotalList();
+
+        for(int i=0; i<1; i++){
+            ordersList.add(new OrderItemDetails(productNameList.get(i), productPriceRate.get(i),
+                    productQuantityList.get(i), totalList.get(i)));
+
+        }
+
+
+    }
+
+    /**
+     *The method and the inner class will populate the inflator with the vegetables.
+     * I do not know how this work. Do not touch it.
+     */
+    public void populateProductListView() {
+
+    }
+
+    public class Adptr extends ArrayAdapter<OrderItemDetails>{
+        Context c;
+        LayoutInflater inflater;
+        public Adptr (Context context){
+            super(context, R.layout.list_view_shopping_cart, ordersList);
+            this.c=context;
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            if(convertView == null){
+                inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.list_view_shopping_cart, null);
+            }
+
+            OrderItemDetails currentProduct = ordersList.get(position);
+            TextView productName = (TextView) convertView.findViewById(R.id.product_name_text_view_in_shopping_cart_list);
+            productName.setText(currentProduct.getProductName());
+
+            TextView productRate = (TextView) convertView.findViewById((R.id.rate_text_view_in_shopping_cart));
+            productRate.setText(currentProduct.getProductPriceRate());
+
+
+            return convertView;
+        }
     }
 
 }
