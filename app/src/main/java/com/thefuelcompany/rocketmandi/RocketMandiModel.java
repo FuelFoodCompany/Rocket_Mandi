@@ -16,8 +16,7 @@ public class RocketMandiModel implements Serializable{
     private String fullName;
     private List<Integer> vegetableQuantityList;
     private List<Integer> fruitQuantityList;
-
-
+    private boolean listViewPopulated = false;
     private int i = 0;
 
     /**
@@ -109,25 +108,45 @@ public class RocketMandiModel implements Serializable{
     public List<String> getProductNameList(){
         List<String> list = new ArrayList<String>();
         list.add("Potato");
+        list.add("Onion");
         return list;
     }
 
     public List<String> getProductRateList(){
         List<String> list = new ArrayList<String>();
-        list.add("Potato");
+        list.add("50/kg");
+        list.add("40/kg");
         return list;
     }
 
     public List<Integer> getProductQuantityList(){
         List<Integer> list = new ArrayList<Integer>();
-        list.add(2);
+        list.add(vegetableQuantityList.get(0));
+        list.add(vegetableQuantityList.get(1));
         return list;
     }
 
     public List<Integer> getTotalList(){
         List<Integer> list = new ArrayList<Integer>();
         list.add(100);
+        list.add(120);
         return list;
+    }
+
+    /**
+     *
+     * @return Whether there are any products added to shopping cart or not.
+     */
+    public boolean productsInShoppingCart(){
+        return true;
+    }
+
+    public void setListViewPopulated(boolean value){
+        this.listViewPopulated = value;
+    }
+
+    public boolean getListViewPopulated(){
+        return listViewPopulated;
     }
 
     public int checkModelObject(){

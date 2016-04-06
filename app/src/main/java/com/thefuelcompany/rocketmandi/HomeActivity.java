@@ -32,7 +32,10 @@ public class HomeActivity extends  FragmentActivity {
     ImageView accountImageView;
     ShoppingCart shoppingCart;
     ListView  listView ;
+    private TextView infoTextViewInShoppingCart;
     public List<OrderItemDetails> ordersList = new ArrayList<OrderItemDetails>();
+    ShoppingCartAdapter adp;
+
     View v;
     //private String username;
     @Override
@@ -46,6 +49,8 @@ public class HomeActivity extends  FragmentActivity {
         setHomeImageView();
         setShoppingCartImageView();
         setAccountImageView();
+        setTextViews();
+        listView = (ListView) findViewById(R.id.products_orders_list_view_at_shopping_cart);
 
             viewPager = (ViewPager) findViewById(R.id.pager);
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -125,8 +130,20 @@ public class HomeActivity extends  FragmentActivity {
             public void onClick(View v) {
 
                 homeActivityViewFlipper.setDisplayedChild(1);
-                updateOrdersList();
-                populateProductListView();
+                if(modelObject.productsInShoppingCart()&&modelObject.getListViewPopulated()){
+                    updateOrdersList();
+
+
+                }else if(modelObject.productsInShoppingCart()){
+                    populateProductListView();
+                    modelObject.setListViewPopulated(true);
+                    shoppingCart.setCheckOutFromShoppingCart(infoTextViewInShoppingCart);
+                }
+
+                else {
+                    shoppingCart.setEmptyProductShoppingCart(infoTextViewInShoppingCart);
+                }
+
 
             }
         });
@@ -149,12 +166,28 @@ public class HomeActivity extends  FragmentActivity {
     }
 
     public void updateOrdersList(){
+
+        Toast.makeText(getApplicationContext(), "dude it is updated", Toast.LENGTH_SHORT).show();
+        ordersList.clear();
+        populateListOfAdapter();
+        adp.notifyDataSetChanged();
+    }
+
+    /**
+     *The method and the inner class will populate the inflator with the vegetables.
+     * I do not know how this work. Do not touch it.
+     */
+    public void populateProductListView() {
+
         Toast.makeText(this, "Update", Toast.LENGTH_SHORT).show();
 
-        Adptr adp = new Adptr(this);
-        listView = (ListView) findViewById(R.id.products_orders_list_view_at_shopping_cart);
+         adp = new ShoppingCartAdapter(this);
         listView.setAdapter(adp);
+        populateListOfAdapter();
 
+    }
+
+    public void populateListOfAdapter(){
         List<String> productNameList;
         productNameList = modelObject.getProductNameList();
 
@@ -167,27 +200,17 @@ public class HomeActivity extends  FragmentActivity {
         List<Integer> totalList;
         totalList = modelObject.getTotalList();
 
-        for(int i=0; i<1; i++){
+        for(int i=0; i<productNameList.size(); i++){
             ordersList.add(new OrderItemDetails(productNameList.get(i), productPriceRate.get(i),
                     productQuantityList.get(i), totalList.get(i)));
 
         }
-
-
     }
 
-    /**
-     *The method and the inner class will populate the inflator with the vegetables.
-     * I do not know how this work. Do not touch it.
-     */
-    public void populateProductListView() {
-
-    }
-
-    public class Adptr extends ArrayAdapter<OrderItemDetails>{
+    public class ShoppingCartAdapter extends ArrayAdapter<OrderItemDetails>{
         Context c;
         LayoutInflater inflater;
-        public Adptr (Context context){
+        public ShoppingCartAdapter (Context context){
             super(context, R.layout.list_view_shopping_cart, ordersList);
             this.c=context;
         }
@@ -208,9 +231,19 @@ public class HomeActivity extends  FragmentActivity {
             TextView productRate = (TextView) convertView.findViewById((R.id.rate_text_view_in_shopping_cart));
             productRate.setText(currentProduct.getProductPriceRate());
 
+            TextView productQuantity = (TextView) convertView.findViewById(R.id.quantity_text_view_in_shopping_cart);
+            productQuantity.setText(currentProduct.getProductQuantity()+"");
+
+            TextView productTotal = (TextView) convertView.findViewById(R.id.total_amount_text_view_in_shopping_cart);
+            productTotal.setText(currentProduct.getProductTotal()+"");
+
 
             return convertView;
         }
+    }
+
+    private void setTextViews(){
+        infoTextViewInShoppingCart = (TextView) findViewById(R.id.info_text_view_in_shopping_cart);
     }
 
 }
