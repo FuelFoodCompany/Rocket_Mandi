@@ -163,12 +163,19 @@ public class FragmentVegetables extends Fragment {
         Integer quantityNew;
         if (quantityBefore > 0){
             quantityNew = quantityBefore-1;
+            modelObject.changeVegetableQuantity(position, quantityNew);
+            vegetableQuantityList.set(position, quantityNew);
+            textView.setText(quantityNew+"");
         }else {
             quantityNew = quantityBefore;
         }
-        vegetableQuantityList.set(position, quantityNew);
-        modelObject.changeVegetableQuantity(position, quantityNew);
-        textView.setText(quantityNew+"");
+
+    }
+
+
+    public void setVegetableListItemZero(int positionOfDeletedProduct){
+        int position = modelObject.getPositionOfProduct(positionOfDeletedProduct);
+        vegetableQuantityList.set(position , 0);
     }
 
     /**

@@ -145,12 +145,18 @@ public class FragmentFruits extends Fragment {
         Integer quantityNew;
         if (quantityBefore > 0){
             quantityNew = quantityBefore-1;
+            fruitQuantityList.set(position, quantityNew);
+            modelObject.changeFruitQuantity(position, quantityNew);
+            textView.setText(quantityNew + "");
         }else {
             quantityNew = quantityBefore;
         }
-        fruitQuantityList.set(position, quantityNew);
-        modelObject.changeFruitQuantity(position, quantityNew);
-        textView.setText(quantityNew + "");
+
+    }
+
+    public void setVegetableListItemZero(int positionOfDeletedProduct){
+        int position = modelObject.getPositionOfProduct(positionOfDeletedProduct);
+        fruitQuantityList.set(position , 0);
     }
 
     /**

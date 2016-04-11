@@ -30,9 +30,11 @@ public class HomeActivity extends  FragmentActivity {
     ImageView homeImageView;
     ImageView shoppingCartImageView;
     ImageView accountImageView;
-    ShoppingCart shoppingCart;
     ListView  listView ;
+    Fragment fragmentFruits;
+    Fragment fragmentVegetables;
     private TextView infoTextViewInShoppingCart;
+    private TextView checkOutTextViewInShoppingCart;
     public List<OrderItemDetails> ordersList = new ArrayList<OrderItemDetails>();
     ShoppingCartAdapter adp;
 
@@ -44,7 +46,7 @@ public class HomeActivity extends  FragmentActivity {
         // check if someone is logged in or not
 
         setContentView(R.layout.activity_home);
-        setShoppingCartObject();
+        modelObject.initializeLists();
         setFlipper();
         setHomeImageView();
         setShoppingCartImageView();
@@ -71,20 +73,25 @@ public class HomeActivity extends  FragmentActivity {
          */
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = null;
+
             if(position == 0){
-                fragment = new FragmentVegetables();
+
+                fragmentVegetables = new FragmentVegetables();
                 Bundle args = new Bundle();
                 args.putSerializable("key", modelObject);
-                fragment.setArguments(args);
+                fragmentVegetables.setArguments(args);
+                return fragmentVegetables;
             }
             if(position==1){
-                fragment = new FragmentFruits();
+
+                fragmentFruits = new FragmentFruits();
                 Bundle args = new Bundle();
                 args.putSerializable("key", modelObject);
-                fragment.setArguments(args);
+                fragmentFruits.setArguments(args);
+                return fragmentFruits;
             }
-            return fragment;
+            return null;
+
         }
 
         /**
@@ -137,11 +144,11 @@ public class HomeActivity extends  FragmentActivity {
                 }else if(modelObject.productsInShoppingCart()){
                     populateProductListView();
                     modelObject.setListViewPopulated(true);
-                    shoppingCart.setCheckOutFromShoppingCart(infoTextViewInShoppingCart);
+                    setCheckOutTextInShoppingCart();
                 }
 
                 else {
-                    shoppingCart.setEmptyProductShoppingCart(infoTextViewInShoppingCart);
+                    setInfoTextViewInShoppingCart();
                 }
 
 
@@ -159,10 +166,6 @@ public class HomeActivity extends  FragmentActivity {
 
             }
         });
-    }
-
-    private void setShoppingCartObject(){
-        shoppingCart = new ShoppingCart(modelObject);
     }
 
     public void updateOrdersList(){
@@ -186,6 +189,7 @@ public class HomeActivity extends  FragmentActivity {
         populateListOfAdapter();
 
     }
+
 
     public void populateListOfAdapter(){
         List<String> productNameList;
@@ -217,7 +221,7 @@ public class HomeActivity extends  FragmentActivity {
 
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             if(convertView == null){
                 inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -237,13 +241,43 @@ public class HomeActivity extends  FragmentActivity {
             TextView productTotal = (TextView) convertView.findViewById(R.id.total_amount_text_view_in_shopping_cart);
             productTotal.setText(currentProduct.getProductTotal()+"");
 
+            TextView deleteTextView = (TextView) convertView.findViewById(R.id.delete_product_in_shopping_cart);
+            deleteTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ordersList.remove(position);
+                    modelObject.deleteProductFromShoppingCart(position);
+                 //   deleteProduct(position);
+                    notifyDataSetChanged();
+                }
+            });
+
 
             return convertView;
         }
     }
 
+    private void setCheckOutTextInShoppingCart(){
+        checkOutTextViewInShoppingCart.setText("Check Out");
+    }
+
+    private void setInfoTextViewInShoppingCart(){
+        infoTextViewInShoppingCart.setText("OOPS...!!! No items in your shopping cart");
+    }
+
     private void setTextViews(){
         infoTextViewInShoppingCart = (TextView) findViewById(R.id.info_text_view_in_shopping_cart);
+        checkOutTextViewInShoppingCart = (TextView) findViewById(R.id.check_out_text_view_in_shopping_cart);
     }
+
+   /**  void deleteProduct(int position){
+        int positionFromModel = modelObject.getPositionOfProduct(position);
+        if(modelObject.getCategory().equalsIgnoreCase("vegetables")) {
+            fragmentVegetables.setVegetableListItemZero(positionFromModel);
+        }
+        else {
+
+        }
+    }*/
 
 }
