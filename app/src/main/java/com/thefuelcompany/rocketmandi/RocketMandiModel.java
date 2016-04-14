@@ -392,14 +392,16 @@ public class RocketMandiModel implements Serializable{
 
     public int getPositionOfProduct(int positionOfDeletedProduct){
 
-        deletedProductId =  productIdList.get(positionOfDeletedProduct);
+    /**    deletedProductId =  productIdList.get(positionOfDeletedProduct);
         int position;
         if(deletedProductId>100 && deletedProductId<201){
             position = vegetableIdList.indexOf(deletedProductId);
         }else {
             position = fruitIdList.indexOf(deletedProductId);
         }
-        return position;
+        return position;*/
+        // I will do this, just take care of activity and fragment
+        return 1;
     }
 
     public String getCategory(){

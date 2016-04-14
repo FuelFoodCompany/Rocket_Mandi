@@ -22,6 +22,8 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thefuelcompany.rocketmandi.R.id.fragment_vegetables;
+
 public class HomeActivity extends  FragmentActivity {
 
     RocketMandiModel modelObject = new RocketMandiModel();
@@ -37,6 +39,7 @@ public class HomeActivity extends  FragmentActivity {
     private TextView checkOutTextViewInShoppingCart;
     public List<OrderItemDetails> ordersList = new ArrayList<OrderItemDetails>();
     ShoppingCartAdapter adp;
+    int vegetableID;
 
     View v;
     //private String username;
@@ -80,6 +83,7 @@ public class HomeActivity extends  FragmentActivity {
                 Bundle args = new Bundle();
                 args.putSerializable("key", modelObject);
                 fragmentVegetables.setArguments(args);
+                vegetableID = fragmentVegetables.getId();
                 return fragmentVegetables;
             }
             if(position==1){
@@ -247,7 +251,8 @@ public class HomeActivity extends  FragmentActivity {
                 public void onClick(View v) {
                     ordersList.remove(position);
                     modelObject.deleteProductFromShoppingCart(position);
-                 //   deleteProduct(position);
+                    int positionNew = modelObject.getPositionOfProduct(position);
+                    deleteProduct(positionNew);
                     notifyDataSetChanged();
                 }
             });
@@ -268,16 +273,15 @@ public class HomeActivity extends  FragmentActivity {
     private void setTextViews(){
         infoTextViewInShoppingCart = (TextView) findViewById(R.id.info_text_view_in_shopping_cart);
         checkOutTextViewInShoppingCart = (TextView) findViewById(R.id.check_out_text_view_in_shopping_cart);
+
     }
 
-   /**  void deleteProduct(int position){
-        int positionFromModel = modelObject.getPositionOfProduct(position);
-        if(modelObject.getCategory().equalsIgnoreCase("vegetables")) {
-            fragmentVegetables.setVegetableListItemZero(positionFromModel);
-        }
-        else {
+    private void deleteProduct(int position){
+        FragmentManager manager = fragmentVegetables.getFragmentManager();
+        FragmentVegetables fragment = (FragmentVegetables) manager.findFragmentById(vegetableID);
+        fragment.setVegetableListItemZero(position);
 
-        }
-    }*/
+        // This is the method from where you have to call the  method in FragmentVegetable class.
+    }
 
 }

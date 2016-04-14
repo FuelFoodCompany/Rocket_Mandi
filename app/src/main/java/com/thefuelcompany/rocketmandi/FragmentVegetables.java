@@ -1,16 +1,12 @@
 package com.thefuelcompany.rocketmandi;
 
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentContainer;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +27,7 @@ public class FragmentVegetables extends Fragment {
     private View v;
     private RocketMandiModel modelObject;
     List<Integer> vegetableQuantityList;
+
 
  public View onCreateView(LayoutInflater inflater, ViewGroup container , Bundle saveInstanceState) {
 
@@ -174,8 +171,9 @@ public class FragmentVegetables extends Fragment {
 
 
     public void setVegetableListItemZero(int positionOfDeletedProduct){
-        int position = modelObject.getPositionOfProduct(positionOfDeletedProduct);
-        vegetableQuantityList.set(position , 0);
+    //    vegetableQuantityList.set(positionOfDeletedProduct , 0);
+        // I will add the functionality myseld , just call this method without exception
+        Toast.makeText(getActivity().getApplicationContext(),"This is working  :"+ positionOfDeletedProduct , Toast.LENGTH_SHORT).show();
     }
 
     /**

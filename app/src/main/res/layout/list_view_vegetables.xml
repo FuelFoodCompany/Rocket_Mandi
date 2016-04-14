@@ -5,6 +5,7 @@
     android:weightSum="10"
     android:background="@color/colorWhite"
     android:clickable="true"
+    android:id="@+id/fragment_vegetables"
     >
 
     <ImageView
