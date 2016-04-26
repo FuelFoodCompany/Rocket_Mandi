@@ -86,24 +86,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/edit_text_at_top_in_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="EDIT"/>
             <LinearLayout
                 android:id="@+id/name_in_my_account_outer_layout"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="10">
-                <TextView
+                <EditText
                     android:id="@+id/name_in_my_account_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
-                    android:text="Praduman"/>
-                <TextView
-                    android:id="@+id/edit_text_for_name_in_my_account"
-                    android:layout_weight="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="EDIT"/>
+                    android:text="Praduman" />
 
             </LinearLayout>
 
@@ -113,24 +112,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="10">
-                <TextView
+                <EditText
                     android:id="@+id/phone_in_my_account_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:text="991330070"/>
-                <TextView
-                    android:id="@+id/edit_text_for_phone_in_my_account"
-                    android:layout_weight="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="EDIT"/>
+                    android:layout_weight="8" />
+
             </LinearLayout>
 
 
             <LinearLayout
                 android:id="@+id/delivery_location_in_my_account_outer_layout"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="10">
@@ -140,12 +133,10 @@
                     android:layout_height="wrap_content"
                     android:text="delivery location"
                     android:layout_weight="8"/>
-                <TextView
-                    android:id="@+id/delivery_location_arrow_in_my_account"
+
+                <Spinner android:id="@+id/delivery_location_spinner_in_my_account"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="    >"
-                    android:layout_weight="2"/>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 

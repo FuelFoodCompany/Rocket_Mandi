@@ -11,12 +11,12 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RocketMandiModel rocketMandiModel;
+  //  private RocketMandiModel rocketMandiModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rocketMandiModel = new RocketMandiModel();
+     //   rocketMandiModel = new RocketMandiModel();
 
         if(checkLoggedIn()){
 

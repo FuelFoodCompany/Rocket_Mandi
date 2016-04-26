@@ -10,13 +10,15 @@ public class Vegetables {
     private String vegetableName;
     private String vegetablePrice;
     private Integer vegetableQuantity;
+    private Integer vegetableID;
 
-    public Vegetables (int vegetableIcon , String vegetableName, String vegetablePrice, Integer vegetableQuantity ){
+    public Vegetables (int vegetableIcon , String vegetableName, String vegetablePrice, Integer vegetableQuantity , Integer vegetableID ){
         super();
         this.vegetableIcon = vegetableIcon;
         this.vegetableName = vegetableName;
         this.vegetablePrice = vegetablePrice;
         this.vegetableQuantity = vegetableQuantity;
+        this.vegetableID = vegetableID;
 
     }
     public int getVegetableIcon(){
@@ -30,6 +32,9 @@ public class Vegetables {
     }
     public Integer getVegetableQuantity(){
         return vegetableQuantity;
+    }
+    public Integer getVegetableID(){
+        return vegetableID;
     }
 
 }

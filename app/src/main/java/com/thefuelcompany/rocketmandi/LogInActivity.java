@@ -1,11 +1,15 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,23 +37,27 @@ public class LogInActivity extends AppCompatActivity {
     TextView resendOTP;
     String otpEntered;
     String otpSent;
-    String passwordAtSignUp;
+    String createPasswordAtSignUp;
     String repeatPasswordAtSignUp;
+    EditText createPasswordAtSignUpEditText;
+    EditText repeatPasswordAtSignUpEditText;
+    TextView createAccountTextViewAtSignUp;
 
     ViewFlipper LogInViewFlipper;
     Intent intent;
     RocketMandiModel rocketMandiModel;
+
+    Context context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        context = LogInActivity.this;
         setFlipper();
         setLogInButton();
         setSignUpTextViewAtLogIn();
-        startHomeActivity();
-        
     }
 
     private void setFlipper(){
@@ -69,11 +77,109 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setEditTextAtLogIn();
                 setPhoneAndPasswordAtLogIn();
-                Toast.makeText(LogInActivity.this, phoneNumberForLogIn + " " + passwordForLogIn, Toast.LENGTH_SHORT).show();
 
+                String message4Phone = checkPhoneNumberAtLogIn(phoneNumberForLogIn);
+                if(message4Phone.equalsIgnoreCase("true")){
+
+                    if(checkInternetConnection()){
+                        if(checkRegistrationOfPhoneInDatabase()){
+                            if(checkPhoneAndPasswordCombination()){
+                                logInUser(phoneNumberForLogIn , passwordForLogIn);
+                            }else {
+                                showErrorDialogue("गलत पासवर्ड" , "पासवर्ड गलत है। \n कृपया पुन: प्रयास करें");
+                            }
+                        }else {
+                            showErrorDialogue("फोन नंबर पंजीकृत (registered) नहीं किया गया है" ,
+                                    "फोन नंबर पंजीकृत नहीं है। \n कृपया साइन अप करो");
+                        }
+                    }else {
+                        showErrorDialogue("कोई इंटरनेट कनेक्शन नहीं" ,"मोबाइल इंटरनेट कनेक्शन ठीक से काम नहीं कर रहा है।\n" +
+                                "इंटरनेट कनेक्शन की जाँच करें और फिर से कोशिश करें");
+                    }
+
+                }else {
+                    showErrorDialogue("गलत नंबर डालना" , message4Phone);
+                }
+                Toast.makeText(LogInActivity.this, phoneNumberForLogIn + " " + passwordForLogIn, Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
+    private void setEditTextAtLogIn(){
+        enterPhoneNumberForLogInEditText = (EditText) findViewById(R.id.LogIn_Enter_Phone_For_LogIn);
+        enterPhoneNumberForLogInEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        enterPasswordForLogInEditText = (EditText) findViewById(R.id.LogIn_Enter_Password_For_LogIn);
+    }
+
+
+    private void setPhoneAndPasswordAtLogIn(){
+        phoneNumberForLogIn = enterPhoneNumberForLogInEditText.getText().toString();
+        passwordForLogIn = enterPasswordForLogInEditText.getText().toString();
+    }
+
+    private String checkPhoneNumberAtLogIn(String phone){
+        if(phone.isEmpty()){
+            return "रिक्त स्थानों की पूर्ति करें";
+        }else {
+            if(!(phone.length() ==10)){
+                return "कृप्या 10 अंकों का फ़ोन नंबर डालें";
+            } else {
+                char[] chars = phone.toCharArray();
+                for(int i=0; i<chars.length; i++){
+                    char c = chars[i];
+                    if(Character.isDigit(c)){
+                        // do nothing, its good
+                    }else {
+                        return "कृपया एक सही संख्या डालिये" ;
+                    }
+                }
+                return "true";
+            }
+
+        }
+    }
+
+    private boolean checkRegistrationOfPhoneInDatabase(){
+        // check from database
+        return true;
+    }
+
+    private boolean checkInternetConnection(){
+        // check internet connection
+        return true;
+    }
+
+    private void showErrorDialogue(String title, String message){
+
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+    }
+
+    private void logInUser(String phone , String password){
+        // log in user
+    }
+
+    private boolean checkPhoneAndPasswordCombination(){
+        return true;
+    }
+
+
+
+
+    /*****************************************************************
+     * From here we will se the methods to let the user sign up
+     * on the application and create a new account.
+     * ****************************************************************
+     */
+
 
     private void setSignUpTextViewAtLogIn(){
         signUpTextView = (TextView) findViewById(R.id.LogIn_SignUp_Text_View);
@@ -89,17 +195,6 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
-    private void setEditTextAtLogIn(){
-        enterPhoneNumberForLogInEditText = (EditText) findViewById(R.id.LogIn_Enter_Phone_For_LogIn);
-        enterPasswordForLogInEditText = (EditText) findViewById(R.id.LogIn_Enter_Password_For_LogIn);
-    }
-
-    private void setPhoneAndPasswordAtLogIn(){
-        phoneNumberForLogIn = enterPhoneNumberForLogInEditText.getText().toString();
-        passwordForLogIn = enterPasswordForLogInEditText.getText().toString();
-    }
-
-
     /**
      * The method will set up the button on Sign Up screen. On Sign Up Screen the user will
      * put his/her name and phone number.
@@ -113,26 +208,85 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setEditTextAtSignUp();
                 setNameAndNumberAtSignUp();
-                setSubmitOTPButton();
-                setBackTextViewAtOTPScreen();
-                setResendOTPTextView();
-                sendOTP();
-                Toast.makeText(LogInActivity.this,fullNameAtSignUp+ "  "+ phoneNumberAtSignUP, Toast.LENGTH_SHORT).show();
-                LogInActivity.this.LogInViewFlipper.showNext();
+                String message4Name = checkName(fullNameAtSignUp);
+                if(message4Name.equalsIgnoreCase("true")){
+                    String message4Phone = checkPhone(phoneNumberAtSignUP);
+                    if(message4Phone.equalsIgnoreCase("true")){
+                        setSubmitOTPButton();
+                        setBackTextViewAtOTPScreen();
+                        setResendOTPTextView();
+                        sendOTP();
+                        LogInActivity.this.LogInViewFlipper.showNext();
+                    }else {
+                        showErrorDialogue("गलत नंबर डालना" , message4Phone);
+                    }
+                }else {
+                    showErrorDialogue("गलत नाम डालना", message4Name);
+                }
             }
         });
     }
-
+    // method will set up the fields at sign up page to enter name and number.
     private void setEditTextAtSignUp(){
         enterNameAtSignUpEditText = (EditText) findViewById(R.id.LogIn_Enter_Name_At_Sign_Up_Edit_Text);
         enterPhoneNumberAtSignUpEditText = (EditText) findViewById(R.id.Login_Enter_Phone_Number_At_Sign_Up_Edit_Text);
     }
 
+    // method will get the value of edit texts at sign up page after user click next button.
     private void setNameAndNumberAtSignUp(){
         fullNameAtSignUp = enterNameAtSignUpEditText.getText().toString();
         phoneNumberAtSignUP = enterPhoneNumberAtSignUpEditText.getText().toString();
     }
 
+
+    private String checkName(String name) {
+
+        if (name.isEmpty()) {
+            return "रिक्त स्थानों की पूर्ति करें";
+        } else {
+            if((name.length() <4 || name.length() > 30)){
+                return "कम से कम 4 शब्दों का नाम दर्ज करें और अधिक से अधिक 30 शब्दों में";
+            }else {
+                char[] chars = name.toCharArray();
+
+                for (int i=0; i<chars.length; i++){
+                    char c = chars[i];
+                    if(Character.isLetter(c) || Character.isWhitespace(c)){
+                        // do nothing
+                    }else {
+                        return "आप आपके नाम में केवल अंग्रेजी शब्दों का प्रयोग कर सकते हैं";
+                    }
+                }
+            }
+
+            return "true";
+        }
+    }
+
+    private String checkPhone(String phone){
+        if(phone.isEmpty()){
+            return "रिक्त स्थानों की पूर्ति करें";
+        }else {
+            if(!(phone.length() ==10)){
+                return "कृप्या 10 अंकों का फ़ोन नंबर डालें";
+            } else {
+                char[] chars = phone.toCharArray();
+                for(int i=0; i<chars.length; i++){
+                    char c = chars[i];
+                    if(Character.isDigit(c)){
+                        // do nothing
+                    }else {
+                        return "कृपया एक सही संख्या डालिये" ;
+                    }
+                }
+                return "true";
+            }
+
+        }
+    }
+
+
+    // method will set up the back to log in text at sign up screen.
     private void setBackToLogTextViewInAtSignUp(){
         backToLogInAtSignUpTextView = (TextView) findViewById(R.id.LogIn_Back_To_LogIn_Text_View_At_Sign_Up);
         backToLogInAtSignUpTextView.setOnClickListener(new View.OnClickListener() {
@@ -143,26 +297,31 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
+
     private void setSubmitOTPButton(){
         submitOTPButton = (Button) findViewById(R.id.LogIn_Submit_Button);
+        setOTPEditText();
         submitOTPButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setOTPEditText();
                 setOTPEntered();
+                String message4OTP = checkOTP();
+                if (message4OTP.equalsIgnoreCase("true")) {
+                    setEnterAndRepeatPasswordForSignUpEditText();
+                    setCreateAccountTextView();
+                    LogInActivity.this.LogInViewFlipper.showNext();
 
-                if (checkOTP()){
-                    Toast.makeText(LogInActivity.this, otpEntered, Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(LogInActivity.this, "OOPS: The OTP you enetered is wrong\n" + "आपके द्वारा दर्ज किया हुआ OPp गलत है" , Toast.LENGTH_SHORT).show();
+                } else {
+                    showErrorDialogue("गलत ओटीपी", message4OTP);
                 }
-
             }
         });
     }
 
+    // set otp at submit otp view
     private void setOTPEditText(){
         logInOTPEditText = (EditText) findViewById(R.id.LogIn_OTP_Edit_Text);
+        logInOTPEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
 
     private void setOTPEntered(){
@@ -193,13 +352,80 @@ public class LogInActivity extends AppCompatActivity {
      * The method will send otp to the user
      */
     private void sendOTP(){
+        // send otp
         Toast.makeText(LogInActivity.this, "OTP has been sent" , Toast.LENGTH_SHORT).show();
     }
 
-    private boolean checkOTP(){
-        return false;
+    private String checkOTP(){
+        // match otp sent and entered
+        if(true){
+            return "true";
+        }else {
+         return "आपके द्वारा दर्ज " +
+                 "ओटीपी गलत है \n कृपया पुन: प्रयास करें।";
+        }
     }
 
+    private void setEnterAndRepeatPasswordForSignUpEditText(){
+        createPasswordAtSignUpEditText = (EditText) findViewById(R.id.LogIn_SignUp_Craete_Password_Edit_Text);
+        repeatPasswordAtSignUpEditText = (EditText) findViewById(R.id.LogIn_SignUp_Repeat_Password_Edit_Text);
+
+    }
+
+    private void setCreateAccountTextView(){
+        createAccountTextViewAtSignUp = (TextView) findViewById(R.id.LogIn_SignUp_Create_Account_Text_View);
+        createAccountTextViewAtSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setEnterAndRepeatPassword();
+                String message4Password = checkPassword();
+                if(message4Password.equalsIgnoreCase("true")){
+                    String message4MatchPassword = checkPasswordMatch();
+                    if(message4MatchPassword.equalsIgnoreCase("true")){
+                       if(checkInternetConnection()){
+                           createNewAccount();
+                           startHomeActivity();
+                       }else {
+                           showErrorDialogue("कोई इंटरनेट कनेक्शन नहीं" ,"मोबाइल इंटरनेट कनेक्शन ठीक से काम नहीं कर रहा है।\n" +
+                                   "इंटरनेट कनेक्शन की जाँच करें और फिर से कोशिश करें" );
+                       }
+                    }else {
+                        showErrorDialogue("पासवर्ड नही मिल रहा" , message4MatchPassword);
+                    }
+
+                }else {
+                    showErrorDialogue("अवैध पासवर्ड" , message4Password);
+                }
+            }
+        });
+    }
+
+    private void setEnterAndRepeatPassword(){
+        createPasswordAtSignUp = createPasswordAtSignUpEditText.getText().toString();
+        repeatPasswordAtSignUp = repeatPasswordAtSignUpEditText.getText().toString();
+    }
+
+    private String checkPassword(){
+        if(createPasswordAtSignUp.length()>4 && createPasswordAtSignUp.length()<12){
+            return "true";
+        }else {
+            return "पासवर्ड कम से कम 4 शब्दों का होना चाहिए";
+        }
+    }
+
+    private String checkPasswordMatch(){
+        if(createPasswordAtSignUp.equalsIgnoreCase(repeatPasswordAtSignUp)){
+            return "true";
+        }else {
+            return "पासवर्ड नही मिल रहा।\n" +
+                    "कृपया पुन: प्रयास करें।";
+        }
+    }
+
+    private void createNewAccount(){
+        // update from here directly.
+        Toast.makeText(context , "new account created" , Toast.LENGTH_SHORT).show();
+    }
 
     private void startHomeActivity(){
         Intent homeActivityIntent = new Intent(LogInActivity.this, HomeActivity.class);

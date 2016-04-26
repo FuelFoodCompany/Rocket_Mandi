@@ -6,4 +6,5 @@
     <string name="toolbar_profile_text_english">Account</string>
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_my_orders">MyOrders</string>
 </resources>

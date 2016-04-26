@@ -1,5 +1,6 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,6 +23,15 @@ public class FragmentFruits extends Fragment {
     private View v;
     private RocketMandiModel modelObject;
     List<Integer> fruitQuantityList;
+    List<Integer> fruitsAddedIdList = new ArrayList<Integer>();
+    List<View> textViewList = new ArrayList<View>();
+    private static FragmentFruits instance;
+
+    public static FragmentFruits getInstance(){
+        if(instance==null)
+            instance = new FragmentFruits();
+        return instance;
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container , Bundle saveInstanceState){
         v = inflater.inflate(R.layout.fragment_fruits, container, false);
@@ -50,9 +60,11 @@ public class FragmentFruits extends Fragment {
 
         fruitQuantityList = modelObject.getFruitQuantityList();
 
+        List<Integer> fruitIdList;
+        fruitIdList = modelObject.getFruitIdList();
 
         for(int i=0; i<fruitIconList.size(); i++){
-            fruitList.add(new Fruits(fruitIconList.get(i),fruitNameList.get(i),fruitPriceRateList.get(i),fruitQuantityList.get(i)));
+            fruitList.add(new Fruits(fruitIconList.get(i),fruitNameList.get(i),fruitPriceRateList.get(i),fruitQuantityList.get(i), fruitIdList.get(i)));
         }
 
     }
@@ -78,7 +90,7 @@ public class FragmentFruits extends Fragment {
             if(itemView == null){
                 itemView = getActivity().getLayoutInflater().inflate(R.layout.list_view_fruits, parent, false);
             }
-            Fruits currentFruit = fruitList.get(position);
+            final Fruits currentFruit = fruitList.get(position);
 
             //Add fruit icon
             ImageView imageView = (ImageView) itemView.findViewById(R.id.image_view_fruits);
@@ -101,7 +113,7 @@ public class FragmentFruits extends Fragment {
             fruitAddIconSymbolTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    addFruitQuantity(position, fruitQuantityAddedTextView);
+                    addFruitQuantity(position, fruitQuantityAddedTextView, currentFruit.getFruitID());
                 }
             });
 
@@ -126,12 +138,18 @@ public class FragmentFruits extends Fragment {
      * @param position
      * @param textView
      */
-    private void addFruitQuantity(int position, TextView textView){
+    private void addFruitQuantity(int position, TextView textView, Integer ID){
         Integer quantityBefore = fruitQuantityList.get(position);
         Integer quantityNew = quantityBefore+1;
         fruitQuantityList.set(position, quantityNew);
         modelObject.changeFruitQuantity(position, quantityNew);
-        textView.setText(quantityNew+"");
+        textView.setText(quantityNew + "");
+        if(fruitsAddedIdList.contains(ID)){
+            // do nothing
+        }else {
+            fruitsAddedIdList.add(ID);
+            textViewList.add(textView);
+        }
     }
 
     /**
@@ -154,9 +172,14 @@ public class FragmentFruits extends Fragment {
 
     }
 
-    public void setVegetableListItemZero(int positionOfDeletedProduct){
-        int position = modelObject.getPositionOfProduct(positionOfDeletedProduct);
-        fruitQuantityList.set(position , 0);
+    public void setFruitListItemZero(int positionOfDeletedProduct){
+        int id = modelObject.getDeletedProductId();
+        int positionOfTextView = fruitsAddedIdList.indexOf(id);
+        fruitQuantityList.set(positionOfDeletedProduct, 0);
+        TextView textView =(TextView) textViewList.get(positionOfTextView);
+        textView.setText("0");
+        textViewList.remove(positionOfTextView);
+        fruitsAddedIdList.remove(positionOfTextView);
     }
 
     /**

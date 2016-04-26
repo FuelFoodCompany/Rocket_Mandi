@@ -1,28 +1,30 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.thefuelcompany.rocketmandi.R.id.fragment_vegetables;
 
 public class HomeActivity extends  FragmentActivity {
 
@@ -39,9 +41,17 @@ public class HomeActivity extends  FragmentActivity {
     private TextView checkOutTextViewInShoppingCart;
     public List<OrderItemDetails> ordersList = new ArrayList<OrderItemDetails>();
     ShoppingCartAdapter adp;
-    int vegetableID;
-
+    private MyAccount myAccount;
     View v;
+
+    private TextView editInMyAccount;
+    private EditText nameTextViewInAccount;;
+    private EditText phoneTextViewInAccount;
+    private TextView deliveryLocationTextViewInAccount;
+    private Spinner deliveryLocationSpinnerInAccount;
+    private TextView myOrdersTextViewInAccount;
+    private TextView myOrderArrowInAccount;
+    private TextView logOutTextViewInAccount;
     //private String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,16 +89,15 @@ public class HomeActivity extends  FragmentActivity {
 
             if(position == 0){
 
-                fragmentVegetables = new FragmentVegetables();
+                fragmentVegetables = FragmentVegetables.getInstance();
                 Bundle args = new Bundle();
                 args.putSerializable("key", modelObject);
                 fragmentVegetables.setArguments(args);
-                vegetableID = fragmentVegetables.getId();
                 return fragmentVegetables;
             }
             if(position==1){
 
-                fragmentFruits = new FragmentFruits();
+                fragmentFruits = FragmentFruits.getInstance();
                 Bundle args = new Bundle();
                 args.putSerializable("key", modelObject);
                 fragmentFruits.setArguments(args);
@@ -155,7 +164,6 @@ public class HomeActivity extends  FragmentActivity {
                     setInfoTextViewInShoppingCart();
                 }
 
-
             }
         });
     }
@@ -167,14 +175,13 @@ public class HomeActivity extends  FragmentActivity {
             public void onClick(View v) {
 
                 homeActivityViewFlipper.setDisplayedChild(2);
-
+                setUpAccountClass();
             }
         });
     }
 
     public void updateOrdersList(){
-
-        Toast.makeText(getApplicationContext(), "dude it is updated", Toast.LENGTH_SHORT).show();
+        
         ordersList.clear();
         populateListOfAdapter();
         adp.notifyDataSetChanged();
@@ -185,13 +192,9 @@ public class HomeActivity extends  FragmentActivity {
      * I do not know how this work. Do not touch it.
      */
     public void populateProductListView() {
-
-        Toast.makeText(this, "Update", Toast.LENGTH_SHORT).show();
-
-         adp = new ShoppingCartAdapter(this);
+        adp = new ShoppingCartAdapter(this);
         listView.setAdapter(adp);
         populateListOfAdapter();
-
     }
 
 
@@ -250,13 +253,12 @@ public class HomeActivity extends  FragmentActivity {
                 @Override
                 public void onClick(View v) {
                     ordersList.remove(position);
+                    int p = modelObject.getPositionOfDeletedProduct(position);
                     modelObject.deleteProductFromShoppingCart(position);
-                    int positionNew = modelObject.getPositionOfProduct(position);
-                    deleteProduct(positionNew);
+                    deleteProduct(p);
                     notifyDataSetChanged();
                 }
             });
-
 
             return convertView;
         }
@@ -274,14 +276,91 @@ public class HomeActivity extends  FragmentActivity {
         infoTextViewInShoppingCart = (TextView) findViewById(R.id.info_text_view_in_shopping_cart);
         checkOutTextViewInShoppingCart = (TextView) findViewById(R.id.check_out_text_view_in_shopping_cart);
 
+        //Text View in My account flipper.
+        editInMyAccount = (TextView) findViewById(R.id.edit_text_at_top_in_account);
+        nameTextViewInAccount = (EditText)findViewById(R.id.name_in_my_account_text);
+        phoneTextViewInAccount = (EditText) findViewById(R.id.phone_in_my_account_text);
+        deliveryLocationTextViewInAccount = (TextView) findViewById(R.id.delivery_location_text_in_my_account);
+        deliveryLocationSpinnerInAccount = (Spinner) findViewById(R.id.delivery_location_spinner_in_my_account);
+        myOrdersTextViewInAccount = (TextView) findViewById(R.id.my_order_text_in_my_account);
+        myOrderArrowInAccount = (TextView) findViewById(R.id.my_order_arrow_in_my_account);
+        logOutTextViewInAccount = (TextView) findViewById(R.id.log_out_text_view);
     }
 
     private void deleteProduct(int position){
-        FragmentManager manager = fragmentVegetables.getFragmentManager();
-        FragmentVegetables fragment = (FragmentVegetables) manager.findFragmentById(vegetableID);
-        fragment.setVegetableListItemZero(position);
+            String category = modelObject.getCategory();
+        if(category.equalsIgnoreCase("vegetables")){
+            FragmentVegetables f = FragmentVegetables.getInstance();
+            f.setVegetableListItemZero(position);
+        }else {
+            FragmentFruits f = FragmentFruits.getInstance();
+            f.setFruitListItemZero(position);
+        }
+    }
 
-        // This is the method from where you have to call the  method in FragmentVegetable class.
+    /*************************************************************************
+     *Here is the method which will set up the account class, which will have
+     * all the action listeners for the third flipper ( child 2 ).
+     * ***********************************************************************
+     */
+
+    private void setUpAccountClass(){
+        setUpMyOrders();
+        setUpLogOut();
+        myAccount = new MyAccount(editInMyAccount,nameTextViewInAccount, phoneTextViewInAccount
+               ,deliveryLocationTextViewInAccount,deliveryLocationSpinnerInAccount,
+                 modelObject, HomeActivity.this);
+
+    }
+    private void setUpMyOrders(){
+
+        myOrdersTextViewInAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<String> dateOfOrdersList = modelObject.getDateOfOrdersList();
+                List<String> totalOfOrdersList = modelObject.getTotalOfOrdersList();
+                List<String> deliveryOfOrdersList = modelObject.getDeliveryOfOrdersList();
+                List<String> paymentStatusOfOrdersList = modelObject.getPaymentStatusOfOrdersList();
+
+                if(dateOfOrdersList.isEmpty()){
+                    showErrorDialogue("No Orders" , "You do not have to any orders yet.\n" +
+                            "Place order now :-) ");
+                }else {
+                    Intent myOrderIntent = new Intent(HomeActivity.this, MyOrders.class);
+                    myOrderIntent.putExtra("dateOfOrderList" , (Serializable) dateOfOrdersList);
+                    myOrderIntent.putExtra("totalOfOrdersList" ,(Serializable) totalOfOrdersList);
+                    myOrderIntent.putExtra("deliveryOfOrdersList" , (Serializable) deliveryOfOrdersList);
+                    myOrderIntent.putExtra("paymentStatusOfOrdersList" ,(Serializable) paymentStatusOfOrdersList);
+                    startActivity(myOrderIntent);
+                }
+
+
+            }
+        });
+    }
+
+    private void setUpLogOut(){
+        logOutTextViewInAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // log out from database
+                startActivity(new Intent(HomeActivity.this, LogInActivity.class));
+                HomeActivity.this.finish();
+            }
+        });
+    }
+
+    private void showErrorDialogue(String title , String message){
+        new AlertDialog.Builder(HomeActivity.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
     }
 
 }

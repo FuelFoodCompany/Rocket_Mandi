@@ -1,5 +1,6 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -27,6 +28,15 @@ public class FragmentVegetables extends Fragment {
     private View v;
     private RocketMandiModel modelObject;
     List<Integer> vegetableQuantityList;
+    List<Integer> vegetablesAddedIdList = new ArrayList<Integer>();
+    List<View> textViewList = new ArrayList<View>();
+    private static FragmentVegetables instance;
+
+    public static FragmentVegetables getInstance(){
+        if(instance==null)
+            instance = new FragmentVegetables();
+        return instance;
+    }
 
 
  public View onCreateView(LayoutInflater inflater, ViewGroup container , Bundle saveInstanceState) {
@@ -62,8 +72,12 @@ public class FragmentVegetables extends Fragment {
 
         vegetableQuantityList = modelObject.getVegetableQuantityList();
 
+        List<Integer> vegetableIdList;
+        vegetableIdList = modelObject.getVegetableIdList();
+
         for(int i=0; i<vegetableIconList.size(); i++){
-         vegetablesList.add(new Vegetables(vegetableIconList.get(i),vegetableNameList.get(i),vegetablePriceRateList.get(i),vegetableQuantityList.get(i)));
+         vegetablesList.add(new Vegetables(vegetableIconList.get(i),vegetableNameList.get(i),vegetablePriceRateList.get(i),vegetableQuantityList.get(i),
+                 vegetableIdList.get(i)));
         }
 
     }
@@ -90,7 +104,7 @@ public class FragmentVegetables extends Fragment {
             if(itemView == null){
                 itemView = getActivity().getLayoutInflater().inflate(R.layout.list_view_vegetables, parent, false);
             }
-            Vegetables currentVeggi = vegetablesList.get(position);
+            final Vegetables currentVeggi = vegetablesList.get(position);
 
             //Add vegetable icon
             ImageView imageView = (ImageView) itemView.findViewById(R.id.image_view_vegetable);
@@ -113,8 +127,8 @@ public class FragmentVegetables extends Fragment {
             vegetableAddIconSymbolTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    addVegetableQuantity(position, vegetableQuantityAddedTextView);
+                    Toast.makeText(getActivity().getApplicationContext(), "MO"+modelObject.checkModelObject(), Toast.LENGTH_SHORT).show();
+                    addVegetableQuantity(position, vegetableQuantityAddedTextView, currentVeggi.getVegetableID());
 
                 }
             });
@@ -141,12 +155,19 @@ public class FragmentVegetables extends Fragment {
      * @param position
      * @param textView
      */
-    private void addVegetableQuantity(int position, TextView textView){
+    private void addVegetableQuantity(int position, TextView textView, Integer ID){
         Integer quantityBefore = vegetableQuantityList.get(position);
         Integer quantityNew = quantityBefore+1;
         vegetableQuantityList.set(position, quantityNew);
         modelObject.changeVegetableQuantity(position, quantityNew);
-        textView.setText(quantityNew+"");
+        textView.setText(quantityNew + "");
+        if(vegetablesAddedIdList.contains(ID)){
+            // do nothing
+        }else {
+            vegetablesAddedIdList.add(ID);
+            textViewList.add(textView);
+        }
+
     }
 
     /**
@@ -171,9 +192,14 @@ public class FragmentVegetables extends Fragment {
 
 
     public void setVegetableListItemZero(int positionOfDeletedProduct){
-    //    vegetableQuantityList.set(positionOfDeletedProduct , 0);
-        // I will add the functionality myseld , just call this method without exception
-        Toast.makeText(getActivity().getApplicationContext(),"This is working  :"+ positionOfDeletedProduct , Toast.LENGTH_SHORT).show();
+
+        int id = modelObject.getDeletedProductId();
+        int positionOfTextView = vegetablesAddedIdList.indexOf(id);
+        vegetableQuantityList.set(positionOfDeletedProduct, 0);
+        TextView textView =(TextView) textViewList.get(positionOfTextView);
+        textView.setText("0");
+        textViewList.remove(positionOfTextView);
+        vegetablesAddedIdList.remove(positionOfTextView);
     }
 
     /**
