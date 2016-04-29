@@ -123,7 +123,7 @@ public class FragmentVegetables extends Fragment {
             vegetableQuantityAddedTextView.setText(currentVeggi.getVegetableQuantity()+"");
 
             //Adding sign
-            TextView vegetableAddIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_vegetable_add_symbol);
+            ImageView vegetableAddIconSymbolTextView = (ImageView) itemView.findViewById(R.id.list_view_vegetable_add_symbol);
             vegetableAddIconSymbolTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -134,7 +134,7 @@ public class FragmentVegetables extends Fragment {
             });
 
             //subtract sign
-            TextView vegetableSubtractIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_vegetable_subtract_symbol);
+            ImageView vegetableSubtractIconSymbolTextView = (ImageView) itemView.findViewById(R.id.list_view_vegetable_subtract_symbol);
             vegetableSubtractIconSymbolTextView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View view){

@@ -52,29 +52,9 @@
         android:layout_weight="1"
         android:clickable="true"
         android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         >
-        <TextView
-            android:id="@+id/list_view_fruit_add_symbol"
-            android:layout_width="@dimen/add_subtract_symbol_layout_width"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/add_subtract_symbol_text_size"
-            android:layout_weight="3"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:gravity="center"
-            android:background="@drawable/rounded_corner"
-            android:textAlignment="gravity"/>
-        <TextView
-            android:id="@+id/text_view_fruit_amount_ordered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2;"
-            android:textSize="@dimen/add_subtract_symbol_text_size"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:textAlignment="gravity"/>
-        <TextView
+        <ImageView
             android:id="@+id/list_view_fruit_subtract_symbol"
             android:layout_width="@dimen/add_subtract_symbol_layout_width"
             android:layout_height="wrap_content"
@@ -83,8 +63,27 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:gravity="center"
-            android:text="-"
-            android:background="@drawable/rounded_corner"
-            android:textAlignment="gravity"/>
+            android:textAlignment="gravity"
+            android:src="@drawable/ic_remove_circle_outline_black_24dp"/>
+        <TextView
+            android:id="@+id/text_view_fruit_amount_ordered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2;"
+            android:textSize="@dimen/add_subtract_symbol_text_size"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"/>
+        <ImageView
+            android:id="@+id/list_view_fruit_add_symbol"
+            android:layout_width="@dimen/add_subtract_symbol_layout_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/add_subtract_symbol_text_size"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:gravity="center"
+            android:textAlignment="gravity"
+            android:src="@drawable/ic_add_circle_outline_black_24dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -41,7 +41,7 @@ public class LogInActivity extends AppCompatActivity {
     String repeatPasswordAtSignUp;
     EditText createPasswordAtSignUpEditText;
     EditText repeatPasswordAtSignUpEditText;
-    TextView createAccountTextViewAtSignUp;
+    Button createAccountButtonAtSignUp;
 
     ViewFlipper LogInViewFlipper;
     Intent intent;
@@ -61,7 +61,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void setFlipper(){
-        LogInViewFlipper = (ViewFlipper) findViewById(R.id.LogIn_Acitivity_View_Flipper);
+        LogInViewFlipper = (ViewFlipper) findViewById(R.id.logIn_activity_view_flipper);
     }
 
     /**
@@ -107,8 +107,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
     private void setEditTextAtLogIn(){
-        enterPhoneNumberForLogInEditText = (EditText) findViewById(R.id.LogIn_Enter_Phone_For_LogIn);
-        enterPhoneNumberForLogInEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        enterPhoneNumberForLogInEditText = (EditText) findViewById(R.id.logIn_enter_phone_for_logIn);
         enterPasswordForLogInEditText = (EditText) findViewById(R.id.LogIn_Enter_Password_For_LogIn);
     }
 
@@ -182,7 +181,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
     private void setSignUpTextViewAtLogIn(){
-        signUpTextView = (TextView) findViewById(R.id.LogIn_SignUp_Text_View);
+        signUpTextView = (TextView) findViewById(R.id.logIn_signUp_text_view);
         signUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +201,7 @@ public class LogInActivity extends AppCompatActivity {
      * The user will be conveyed to OTP screen
      */
     private void setNextToOTPButton(){
-        nextToOTPButton = (Button) findViewById(R.id.LogIn_To_OTP_Next_Button);
+        nextToOTPButton = (Button) findViewById(R.id.login_to_OTP_next_button);
         nextToOTPButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,8 +227,8 @@ public class LogInActivity extends AppCompatActivity {
     }
     // method will set up the fields at sign up page to enter name and number.
     private void setEditTextAtSignUp(){
-        enterNameAtSignUpEditText = (EditText) findViewById(R.id.LogIn_Enter_Name_At_Sign_Up_Edit_Text);
-        enterPhoneNumberAtSignUpEditText = (EditText) findViewById(R.id.Login_Enter_Phone_Number_At_Sign_Up_Edit_Text);
+        enterNameAtSignUpEditText = (EditText) findViewById(R.id.logIn_enter_name_at_sign_up_edit_text);
+        enterPhoneNumberAtSignUpEditText = (EditText) findViewById(R.id.login_enter_phone_number_at_sign_up_edit_text);
     }
 
     // method will get the value of edit texts at sign up page after user click next button.
@@ -288,7 +287,7 @@ public class LogInActivity extends AppCompatActivity {
 
     // method will set up the back to log in text at sign up screen.
     private void setBackToLogTextViewInAtSignUp(){
-        backToLogInAtSignUpTextView = (TextView) findViewById(R.id.LogIn_Back_To_LogIn_Text_View_At_Sign_Up);
+        backToLogInAtSignUpTextView = (TextView) findViewById(R.id.logIn_back_to_login_text_view_at_sign_up);
         backToLogInAtSignUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -299,7 +298,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
     private void setSubmitOTPButton(){
-        submitOTPButton = (Button) findViewById(R.id.LogIn_Submit_Button);
+        submitOTPButton = (Button) findViewById(R.id.login_submit_button);
         setOTPEditText();
         submitOTPButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,7 +319,7 @@ public class LogInActivity extends AppCompatActivity {
 
     // set otp at submit otp view
     private void setOTPEditText(){
-        logInOTPEditText = (EditText) findViewById(R.id.LogIn_OTP_Edit_Text);
+        logInOTPEditText = (EditText) findViewById(R.id.login_OTP_edit_text);
         logInOTPEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
 
@@ -329,7 +328,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void setBackTextViewAtOTPScreen(){
-        backTextViewAtOTP = (TextView) findViewById(R.id.LogIn_Back_Text_View);
+        backTextViewAtOTP = (TextView) findViewById(R.id.login_back_text_view);
         backTextViewAtOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -339,7 +338,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void setResendOTPTextView(){
-        resendOTP = (TextView) findViewById(R.id.LogIn_Send_Again_Text_View);
+        resendOTP = (TextView) findViewById(R.id.logIn_send_again_text_view);
         resendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -367,14 +366,14 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void setEnterAndRepeatPasswordForSignUpEditText(){
-        createPasswordAtSignUpEditText = (EditText) findViewById(R.id.LogIn_SignUp_Craete_Password_Edit_Text);
-        repeatPasswordAtSignUpEditText = (EditText) findViewById(R.id.LogIn_SignUp_Repeat_Password_Edit_Text);
+        createPasswordAtSignUpEditText = (EditText) findViewById(R.id.login_signup_create_password_edit_text);
+        repeatPasswordAtSignUpEditText = (EditText) findViewById(R.id.login_signup_repeat_password_edit_text);
 
     }
 
     private void setCreateAccountTextView(){
-        createAccountTextViewAtSignUp = (TextView) findViewById(R.id.LogIn_SignUp_Create_Account_Text_View);
-        createAccountTextViewAtSignUp.setOnClickListener(new View.OnClickListener() {
+        createAccountButtonAtSignUp = (Button) findViewById(R.id.login_sign_up_create_account_button);
+        createAccountButtonAtSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setEnterAndRepeatPassword();

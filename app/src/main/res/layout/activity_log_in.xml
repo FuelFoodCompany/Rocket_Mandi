@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.thefuelcompany.rocketmandi.LogInActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorWhite">
 <ViewFlipper
-    android:id="@+id/LogIn_Acitivity_View_Flipper"
+    android:id="@+id/logIn_activity_view_flipper"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -15,124 +16,373 @@
         android:id="@+id/LogIn_LogIn_Layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="100dp">
+        android:weightSum="10">
+
+        <LinearLayout
+            android:id="@+id/app_title_at_log_in_liner_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_weight="4">
+        <TextView
+            android:id="@+id/rocket_mandi_title_text_view_in_log_in_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/colorAppThemeSeaGreen"
+            android:textSize="@dimen/app_title_text_size_for_log_in" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/log_in_fields_liner_layout_at_log_in"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_weight="3"
+            >
 
         <EditText
-            android:id="@+id/LogIn_Enter_Phone_For_LogIn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Enter phone number" />
+            android:id="@+id/logIn_enter_phone_for_logIn"
+            android:layout_width="@dimen/log_in_fields_width"
+            android:layout_height="@dimen/username_and_password_field_height"
+            android:inputType="phone"
+            android:hint="@string/username_phone_field_hint"
+            android:textSize="@dimen/log_in_fields_text_size"
+            android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
+            android:maxLength="10"
+            android:textColor="@color/colorBlack" />
         <EditText
             android:id="@+id/LogIn_Enter_Password_For_LogIn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Password"/>
+            android:layout_width="@dimen/log_in_fields_width"
+            android:layout_height="@dimen/username_and_password_field_height"
+            android:inputType="textPassword"
+            android:hint="@string/password_field_hint"
+            android:textSize="@dimen/log_in_fields_text_size"
+            android:drawableLeft="@drawable/ic_lock_black_24dp"
+            android:maxLength="15"
+            android:textColor="@color/colorBlack" />
         <Button
             android:id="@+id/LogIn_LogIn_Button"
+            android:layout_width="@dimen/log_in_fields_width"
+            android:layout_height="@dimen/username_and_password_field_height"
+            android:text="@string/log_in_text_for_log_in_button"
+            android:textSize="@dimen/log_in_fields_text_size"
+            android:background="@color/colorAppThemeSeaGreen"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sign_up_and_forgot_password_text"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Log In"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:weightSum="10">
 
         <TextView
-            android:id="@+id/LogIn_SignUp_Text_View"
+            android:id="@+id/logIn_signUp_text_view"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Sign Up"/>
-    </LinearLayout>
-<LinearLayout
-    android:id="@+id/LogIn_Activity_Name_And_Phone_Sign_Up_Layout"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="100dp">
-<EditText
-    android:id="@+id/LogIn_Enter_Name_At_Sign_Up_Edit_Text"
-    android:layout_width="match_parent"
-    android:layout_height="20dp"
-    android:editable="true"
-    android:text="Name"/>
-    <EditText
-        android:id="@+id/Login_Enter_Phone_Number_At_Sign_Up_Edit_Text"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:editable="true"
-        android:text="Phone"/>
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up_text"
+            android:textSize="@dimen/log_in_fields_text_size"
+            android:gravity= "center_horizontal|center_vertical"
+            android:textColor="@color/colorBlack"
+            android:layout_weight="7" />
 
-    <Button
-        android:id="@+id/LogIn_To_OTP_Next_Button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Next"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="OR"/>
+           <TextView
+               android:id="@+id/forgot_password_text_view"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="@string/forgot_password_text_view"
+               android:textSize="@dimen/log_in_fields_text_size"
+               android:gravity= "center_horizontal|center_vertical"
+               android:layout_weight="3"/>
 
-    <TextView
-        android:id="@+id/LogIn_Back_To_LogIn_Text_View_At_Sign_Up"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Back to Log In"/>
-</LinearLayout>
+           </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/LogIn_Activity_OTP_Layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="100dp">
+       </LinearLayout>
 
-        <EditText
-            android:id="@+id/LogIn_OTP_Edit_Text"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="OTP"/>
+   <LinearLayout
+       android:id="@+id/logIn_activity_name_And_phone_sign_up_layout"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:weightSum="10">
 
-        <Button
-            android:id="@+id/LogIn_Submit_Button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Submit" />
+       <LinearLayout
+           android:id="@+id/title_line_layout_at_name_and_number"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="4"
+           android:background="@color/colorWhite"
+           android:gravity="center_horizontal"
+           android:weightSum="10">
 
-        <TextView
-            android:id="@+id/LogIn_Send_Again_Text_View"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Send again"/>
 
-        <TextView
-            android:id="@+id/LogIn_Back_Text_View"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Back"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/LogIn_Password_Creat_Layout_Text_View"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="100dp">
+           <TextView
+               android:id="@+id/title_line_one_text_view_at_name_and_number"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="@color/colorWhite"
+               android:textColor="@color/colorAppThemeSeaGreen"
+               android:text="@string/title_line_one_at_name_and_number_page"
+               android:textSize="@dimen/title_line_text_size_at_sign_up"
+               android:gravity="center_horizontal|center_vertical"
+               android:layout_weight="5"
+               android:textStyle="bold"/>
 
-        <EditText
-            android:id="@+id/LogIn_SignUp_Craete_Password_Edit_Text"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Create Password"/>
+           <TextView
+               android:id="@+id/title_line_two_text_view_at_name_and_number"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="@color/colorWhite"
+               android:textColor="@color/colorBlack"
+               android:text="@string/title_line_two_at_name_and_number_page"
+               android:textSize="@dimen/title_line_text_size_at_sign_up"
+               android:gravity="center_horizontal"
+               android:layout_weight="3"/>
 
-        <EditText
-            android:id="@+id/LogIn_SignUp_Repeat_Password_Edit_Text"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Repeat Password"/>
+       </LinearLayout>
 
-        <TextView
-            android:id="@+id/LogIn_SignUp_Create_Account_Text_View"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Create Account"/>
+       <LinearLayout
+           android:id="@+id/name_and_number_layout_at_sign_up"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center_horizontal"
+           android:layout_weight="3">
 
-    </LinearLayout>
-</ViewFlipper>
-    </LinearLayout>
+      <EditText
+       android:id="@+id/logIn_enter_name_at_sign_up_edit_text"
+       android:layout_width="@dimen/log_in_fields_width"
+       android:layout_height="@dimen/username_and_password_field_height"
+       android:inputType="textPersonName"
+       android:hint="@string/enter_your_name_hint"
+       android:textSize="@dimen/log_in_fields_text_size"
+       android:maxLength="20" />
+
+       <EditText
+           android:id="@+id/login_enter_phone_number_at_sign_up_edit_text"
+           android:layout_width="@dimen/log_in_fields_width"
+           android:layout_height="@dimen/username_and_password_field_height"
+           android:hint="@string/username_phone_field_hint"
+           android:textSize="@dimen/log_in_fields_text_size"
+           android:inputType="phone"
+           android:maxLength="10" />
+
+       <Button
+           android:id="@+id/login_to_OTP_next_button"
+           android:layout_width="@dimen/log_in_fields_width"
+           android:layout_height="@dimen/username_and_password_field_height"
+           android:text="@string/next_button_text"
+           android:background="@color/colorAppThemeSeaGreen"
+           android:textColor="@color/colorWhite"
+           android:textSize="@dimen/log_in_fields_text_size" />
+       </LinearLayout>
+
+       <TextView
+           android:id="@+id/logIn_back_to_login_text_view_at_sign_up"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/back_to_log_in_text"
+           android:textColor="@color/colorBlack"
+           android:textSize="@dimen/log_in_fields_text_size"
+           android:gravity="center_horizontal|center_vertical"
+           android:layout_weight="3"/>
+
+   </LinearLayout>
+
+       <LinearLayout
+           android:id="@+id/login_activity_OTP_layout"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:weightSum="10">
+
+           <LinearLayout
+               android:id="@+id/title_line_layout_at_submit_OTP"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4"
+               android:background="@color/colorWhite"
+               android:gravity="center_horizontal"
+               android:weightSum="10">
+
+
+               <TextView
+                   android:id="@+id/title_line_one_text_view_at_submit_OTP"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@color/colorWhite"
+                   android:textColor="@color/colorBlack"
+                   android:text="@string/title_line_one_at_submit_OTP"
+                   android:textSize="@dimen/title_line_text_size_at_sign_up"
+                   android:gravity="center_horizontal|center_vertical"
+                   android:layout_weight="5" />
+
+               <TextView
+                   android:id="@+id/title_line_two_text_view_at_submit_OTP"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@color/colorWhite"
+                   android:textColor="@color/colorBlack"
+                   android:text="@string/title_line_two_at_submit_OTP"
+                   android:textSize="@dimen/title_line_text_size_at_sign_up"
+                   android:gravity="center_horizontal"
+                   android:layout_weight="3"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:id="@+id/submit_otp_layout"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+               android:layout_weight="3">
+
+           <EditText
+               android:id="@+id/login_OTP_edit_text"
+               android:layout_width="@dimen/log_in_fields_width"
+               android:layout_height="@dimen/username_and_password_field_height"
+               android:hint="@string/otp_text_hint"
+               android:inputType="phone"
+               android:maxLength="4"
+               android:textSize="@dimen/log_in_fields_text_size"
+               android:textColor="@color/colorBlack"
+               android:gravity="center_horizontal" />
+
+           <Button
+               android:id="@+id/login_submit_button"
+               android:layout_width="@dimen/log_in_fields_width"
+               android:layout_height="@dimen/username_and_password_field_height"
+               android:background="@color/colorAppThemeSeaGreen"
+               android:textColor="@color/colorWhite"
+               android:textSize="@dimen/log_in_fields_text_size"
+               android:text="@string/submit_OTP_button_text" />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="3"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:id="@+id/resend_OTP_and_back_text_layout"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="3"
+               android:weightSum="10"
+               android:gravity="center_horizontal|center_vertical">
+
+           <TextView
+               android:id="@+id/logIn_send_again_text_view"
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/username_and_password_field_height"
+               android:textColor="@color/colorBlack"
+               android:textSize="@dimen/log_in_fields_text_size"
+               android:gravity="center_horizontal|center_vertical"
+               android:text="@string/send_OTP_again"
+               android:layout_weight="5"/>
+
+           <TextView
+               android:id="@+id/login_back_text_view"
+               android:layout_width="@dimen/log_in_fields_width"
+               android:layout_height="@dimen/username_and_password_field_height"
+               android:textSize="@dimen/log_in_fields_text_size"
+               android:textColor="@color/colorBlack"
+               android:gravity="center_horizontal|center_vertical"
+               android:text="@string/back_to_name_and_number"
+               android:layout_weight="5"/>
+           </LinearLayout>
+       </LinearLayout>
+
+       <LinearLayout
+           android:id="@+id/login_password_create_layout_text_view"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:weightSum="10">
+
+           <LinearLayout
+               android:id="@+id/title_line_layout_at_create_password"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4"
+               android:background="@color/colorWhite"
+               android:gravity="center_horizontal"
+               android:weightSum="10">
+
+
+               <TextView
+                   android:id="@+id/title_line_one_text_view_at_create_password"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@color/colorWhite"
+                   android:textColor="@color/colorBlack"
+                   android:text="@string/title_line_one_at_create_password"
+                   android:textSize="@dimen/title_line_text_size_at_sign_up"
+                   android:gravity="center_horizontal|center_vertical"
+                   android:layout_weight="5" />
+
+               <TextView
+                   android:id="@+id/title_line_two_text_view_at_create_password"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@color/colorWhite"
+                   android:textColor="@color/colorBlack"
+                   android:text="@string/title_line_two_at_create_password"
+                   android:textSize="@dimen/title_line_text_size_at_sign_up"
+                   android:gravity="center_horizontal"
+                   android:layout_weight="3"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:id="@+id/create_account_fields_layout"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+              android:layout_weight="3">
+
+           <EditText
+               android:id="@+id/login_signup_create_password_edit_text"
+               android:layout_width="@dimen/log_in_fields_width"
+               android:layout_height="@dimen/username_and_password_field_height"
+               android:textSize="@dimen/log_in_fields_text_size"
+               android:textColor="@color/colorBlack"
+               android:hint="@string/create_password_text" />
+
+           <EditText
+               android:id="@+id/login_signup_repeat_password_edit_text"
+               android:layout_width="@dimen/log_in_fields_width"
+               android:layout_height="@dimen/username_and_password_field_height"
+               android:textSize="@dimen/log_in_fields_text_size"
+               android:textColor="@color/colorBlack"
+               android:hint="@string/repeat_password_text" />
+
+           <Button
+               android:id="@+id/login_sign_up_create_account_button"
+               android:layout_width="@dimen/log_in_fields_width"
+               android:layout_height="@dimen/username_and_password_field_height"
+               android:text="@string/create_account_button_text"
+               android:textColor="@color/colorWhite"
+               android:background="@color/colorAppThemeSeaGreen"
+               android:textStyle="bold"
+               android:textSize="@dimen/log_in_fields_text_size"/>
+
+           </LinearLayout>
+       </LinearLayout>
+   </ViewFlipper>
+       </LinearLayout>
 

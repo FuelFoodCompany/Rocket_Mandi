@@ -7,4 +7,31 @@
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_my_orders">MyOrders</string>
+    <string name="username_phone_field_hint">Enter 10 Digit Mobile Number</string>
+    <string name="password_field_hint">Enter Password</string>
+    <string name="log_in_text_for_log_in_button">Log In</string>
+    <string name="or_text_at_log_in">OR</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="forgot_password_text_view">Forgot Password ?</string>
+    <string name="enter_your_name_hint">Enter Your Name</string>
+    <string name="next_button_text">NEXT</string>
+    <string name="back_to_log_in_text">Back To Log In</string>
+    <string name="otp_text_hint">Enter 4 Digit OTP</string>
+    <string name="submit_OTP_button_text">SUBMIT OTP</string>
+    <string name="send_OTP_again">Send OTP Again</string>
+    <string name="back_to_name_and_number">Back</string>
+    <string name="create_password_text">Create Password</string>
+    <string name="repeat_password_text">Repeat Password</string>
+    <string name="create_account_button_text">Create Account Now</string>
+    <string name="title_line_one_at_name_and_number_page">Welcome to ROCKET MANDI</string>
+    <string name="title_line_two_at_name_and_number_page">We deliver direct from FARM to your PLATE</string>
+    <string name="title_line_one_at_submit_OTP">Order and pick up FRESH HARVEST next morning</string>
+    <string name="title_line_two_at_submit_OTP">from your favourite nearest store</string>
+    <string name="title_line_one_at_create_password">No turning back, just one step away</string>
+    <string name="title_line_two_at_create_password">from getting fresh Fruits and Vegetables</string>
+
+    <string name="edit_text_in_my_account">EDIT</string>
+    <string name="pick_up_point_text_in_my_account">PickUpPoint</string>
+    <string name="my_orders_text_in_my_account">My Orders</string>
+    <string name="log_out_text_in_my_account">Log Out</string>
 </resources>

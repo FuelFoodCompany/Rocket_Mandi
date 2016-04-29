@@ -109,7 +109,7 @@ public class FragmentFruits extends Fragment {
             fruitQuantityAddedTextView.setText(currentFruit.getFruitQuantity()+"");
 
             //Adding sign
-            TextView fruitAddIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_fruit_add_symbol);
+            ImageView fruitAddIconSymbolTextView = (ImageView) itemView.findViewById(R.id.list_view_fruit_add_symbol);
             fruitAddIconSymbolTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -117,7 +117,7 @@ public class FragmentFruits extends Fragment {
                 }
             });
 
-            TextView fruitSubtractIconSymbolTextView = (TextView) itemView.findViewById(R.id.list_view_fruit_subtract_symbol);
+            ImageView fruitSubtractIconSymbolTextView = (ImageView) itemView.findViewById(R.id.list_view_fruit_subtract_symbol);
             fruitSubtractIconSymbolTextView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View view){

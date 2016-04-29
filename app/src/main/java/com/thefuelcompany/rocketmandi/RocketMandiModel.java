@@ -358,7 +358,7 @@ public class RocketMandiModel implements Serializable{
      * @return Whether there are any products added to shopping cart or not.
      */
     public boolean productsInShoppingCart(){
-        if(productNameList == null){
+        if(productNameList.isEmpty()){
             return false;
         }else {
             return true;
