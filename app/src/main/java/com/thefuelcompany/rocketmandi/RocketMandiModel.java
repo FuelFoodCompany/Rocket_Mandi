@@ -16,6 +16,7 @@ public class RocketMandiModel implements Serializable{
 
     // user name and mobile number will be same
 
+    private String emailEncoded;
     private String fullName;
     private String phone;
     private String newFullName;
@@ -43,13 +44,21 @@ public class RocketMandiModel implements Serializable{
     private List <Integer> productIdList;
     private List <Integer> shoppingTotalList;
     private List<Integer> totalBillList;
-    private String [] deliveryLocationArray;
+    private String [] pickUpLocationArray;
+    private String [] pickUpAreaArray;
+    private HashMap<String , List<String>> pickUpLocationHashMap;
     private int previousPositionOfDeliveryLocationSelected;
+    private int previousPositionOfPickUpAreaSelected;
+    private String pickUpAreaSelected;
+    private String pickUpLocationSelected;
 
 
     private boolean listViewPopulated = false;
     private int i = 0;
 
+    public RocketMandiModel(String emailEncoded){
+        this.emailEncoded = emailEncoded;
+    }
 
     public void initializeLists(){
 
@@ -61,6 +70,8 @@ public class RocketMandiModel implements Serializable{
         productIdList = new ArrayList<Integer>();
         shoppingTotalList = new ArrayList<Integer>();
         totalBillList = new ArrayList<Integer>();
+        pickUpLocationHashMap = new HashMap<>();
+        pickUpAreaSelected = "Rk Puram Sec 10";
 
         setVegetableIconList();
         setVegetableNameList();
@@ -80,7 +91,10 @@ public class RocketMandiModel implements Serializable{
 
         setPhone();
         setFullName();
+        setPickUpAreaArray();
+        setPickUpLocationHashMap();
         setDeliveryLocationArray();
+        setPreviousPositionPositionOfPickUpAreaSelected();
         setPreviousPositionOfDeliveryLocationSelected();
 
     }
@@ -331,7 +345,7 @@ public class RocketMandiModel implements Serializable{
 
     private void setTotalOfIndividualProduct(int productPrice, int productQuantity , int positionInProductList){
         int totalPrice= productPrice*productQuantity;
-        productTotalPriceList.set(positionInProductList , totalPrice);
+        productTotalPriceList.set(positionInProductList, totalPrice);
     }
 
 
@@ -426,7 +440,7 @@ public class RocketMandiModel implements Serializable{
         productQuantityList.add(quantityNew);
         productNameList.add(productName);
         productPriceRateList.add(productPriceRate);
-        setTotalOfIndividualProduct( productPrice, quantityNew );
+        setTotalOfIndividualProduct(productPrice, quantityNew);
     }
 
     private void changeProductList( int quantityNew, int productPrice , int positionInProductList){
@@ -487,22 +501,83 @@ public class RocketMandiModel implements Serializable{
             return false;
         }
     }
-    private void setDeliveryLocationArray(){
-        // get from database
-        deliveryLocationArray = new String[] {"Select One Location","RK Puram sector 8 \n Shop No 16 \n Aggarwal Bakery", "RK Puram Sector 8 \n" +
-                "Shop No 52 \n Chicky chik chop" , "RK Puram sector 12 \n Shop no 10 \n Bom Bom shop"};
+
+    public String setNewEmail(String email , String newEmail , String password, String emailDecoded){
+        return "";
+    }
+
+    public String setNewPassword(String email , String oldPassword ,String newPassword){
+        return "";
+    }
+
+
+    public String getEmail(){
+        return "gajal@gmail.com";
+    }
+
+    private void setPickUpAreaArray(){
+        pickUpAreaArray = new String[]{"Select pick up area", "Rohini Sec 8" , "Rk Puram Sec 10" , "South Ex"};
+    }
+
+    private void setPickUpLocationHashMap(){
+        List<String> emptyList = new ArrayList<String>();
+        List<String> l1 = new ArrayList<String>();
+        l1.add("Select pick up shop");l1.add("Shop no 2");l1.add("Shop no 3 Chiki ckik");l1.add("Shop no 6 aggarwal sweets");
+        List<String> l2 = new ArrayList<String>();
+        l2.add("Select pick up shop");l2.add("Shop no 12 Ding dong shop");l2.add("Shop no 13 ");l2.add("Shop no 16 banbaar sweets");
+        List<String> l3 = new ArrayList<String>();
+        l3.add("Select pick up shop");l3.add("Shop no 22 Ding dong shop");l3.add("Shop no 23 ");l3.add("Shop no 26 banbaar sweets");
+        pickUpLocationHashMap.put("Select pick up area" , emptyList);
+        pickUpLocationHashMap.put("Rohini Sec 8" , l1);
+        pickUpLocationHashMap.put("Rk Puram Sec 10" , l2);
+        pickUpLocationHashMap.put("South Ex" ,l3 );
+    }
+
+    public void setDeliveryLocationArray(){
+        if(previousPositionOfPickUpAreaSelected ==0){
+            pickUpLocationArray = new String[]{};
+        }else {
+            List<String> list = pickUpLocationHashMap.get(pickUpAreaSelected);
+            pickUpLocationArray = list.toArray(new String[list.size()]);
+        }
+    }
+
+    public void setPickUpAreaSelected(String areaSelected){
+        pickUpAreaSelected = areaSelected;
     }
 
     private void setPreviousPositionOfDeliveryLocationSelected(){
-        previousPositionOfDeliveryLocationSelected = 1;
+        // get from database
+        previousPositionOfDeliveryLocationSelected = 0;
+    }
+
+    private void setPreviousPositionPositionOfPickUpAreaSelected(){
+        // get from database
+        previousPositionOfPickUpAreaSelected = 0;
+    }
+
+    public void setNewPickUpLocation(String locationSelected){
+        pickUpLocationSelected = locationSelected;
     }
 
     public String[] getDeliveryLocationArray(){
-        return deliveryLocationArray;
+        return pickUpLocationArray;
+    }
+
+    public String[] getPickUpAreaArray(){
+        return pickUpAreaArray;
     }
 
     public int getPreviousPositionOfDeliveryLocationSelected(){
         return previousPositionOfDeliveryLocationSelected;
+    }
+
+    public int getPreviousPositionOfPickUpAreaSelected(){
+        return previousPositionOfPickUpAreaSelected;
+    }
+
+    public void setNewPositionOfPickUpAreaSelected(int position){
+        previousPositionOfPickUpAreaSelected = position;
     }
 
     public void setNewPositionOfDeliveryLocation(int position){

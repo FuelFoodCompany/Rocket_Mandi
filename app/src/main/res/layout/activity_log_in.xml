@@ -7,6 +7,17 @@
     tools:context="com.thefuelcompany.rocketmandi.LogInActivity"
     android:orientation="vertical"
     android:background="@color/colorWhite">
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 <ViewFlipper
     android:id="@+id/logIn_activity_view_flipper"
     android:layout_width="match_parent"
@@ -44,14 +55,13 @@
             >
 
         <EditText
-            android:id="@+id/logIn_enter_phone_for_logIn"
+            android:id="@+id/logIn_enter_email_for_logIn"
             android:layout_width="@dimen/log_in_fields_width"
             android:layout_height="@dimen/username_and_password_field_height"
-            android:inputType="phone"
-            android:hint="@string/username_phone_field_hint"
+            android:hint="@string/enter_email_hint_text"
             android:textSize="@dimen/log_in_fields_text_size"
             android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
-            android:maxLength="10"
+            android:maxLength="35"
             android:textColor="@color/colorBlack" />
         <EditText
             android:id="@+id/LogIn_Enter_Password_For_LogIn"
@@ -61,7 +71,7 @@
             android:hint="@string/password_field_hint"
             android:textSize="@dimen/log_in_fields_text_size"
             android:drawableLeft="@drawable/ic_lock_black_24dp"
-            android:maxLength="15"
+            android:maxLength="20"
             android:textColor="@color/colorBlack" />
         <Button
             android:id="@+id/LogIn_LogIn_Button"
@@ -355,13 +365,23 @@
                android:gravity="center_horizontal"
               android:layout_weight="3">
 
+               <EditText
+                   android:id="@+id/login_sign_up_enter_email_edit_text"
+                   android:layout_width="@dimen/log_in_fields_width"
+                   android:layout_height="@dimen/username_and_password_field_height"
+                   android:textSize="@dimen/log_in_fields_text_size"
+                   android:textColor="@color/colorBlack"
+                   android:hint="@string/enter_email_hint_text"
+                   android:maxLength="35"/>
+
            <EditText
                android:id="@+id/login_signup_create_password_edit_text"
                android:layout_width="@dimen/log_in_fields_width"
                android:layout_height="@dimen/username_and_password_field_height"
                android:textSize="@dimen/log_in_fields_text_size"
                android:textColor="@color/colorBlack"
-               android:hint="@string/create_password_text" />
+               android:hint="@string/create_password_text"
+               android:inputType="textPassword"/>
 
            <EditText
                android:id="@+id/login_signup_repeat_password_edit_text"
@@ -369,7 +389,8 @@
                android:layout_height="@dimen/username_and_password_field_height"
                android:textSize="@dimen/log_in_fields_text_size"
                android:textColor="@color/colorBlack"
-               android:hint="@string/repeat_password_text" />
+               android:hint="@string/repeat_password_text"
+               android:inputType="textPassword"/>
 
            <Button
                android:id="@+id/login_sign_up_create_account_button"

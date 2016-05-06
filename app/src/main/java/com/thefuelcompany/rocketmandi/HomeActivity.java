@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.firebase.client.Firebase;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ import static com.thefuelcompany.rocketmandi.R.color.colorWhite;
 
 public class HomeActivity extends  FragmentActivity {
 
-    RocketMandiModel modelObject = new RocketMandiModel();
+    RocketMandiModel modelObject;
     ViewPager viewPager = null;
     ViewFlipper homeActivityViewFlipper;
     ImageView homeImageView;
@@ -47,10 +49,14 @@ public class HomeActivity extends  FragmentActivity {
     private MyAccount myAccount;
     View v;
 
-    private TextView editInMyAccount;
-    private EditText nameTextViewInAccount;;
-    private EditText phoneTextViewInAccount;
-    private TextView deliveryLocationTextViewInAccount;
+    private TextView nameTextViewInAccount;
+    private TextView phoneTextViewInAccount;
+    private ImageView editNameImageViewInAccount;
+    private ImageView editPhoneImageViewInAccount;
+    private TextView editEmailTextViewInAccount;
+    private ImageView editEmailImageViewInAccount;
+    private TextView editPasswordTextViewInAccount;
+    private Spinner deliveryAreaSpinnerInAccount;
     private Spinner deliveryLocationSpinnerInAccount;
     private TextView myOrdersTextViewInAccount;
     private TextView logOutTextViewInAccount;
@@ -64,6 +70,10 @@ public class HomeActivity extends  FragmentActivity {
     private TextView toolbarHomeTextView;
     private TextView toolbarShoppingCartTextView;
     private TextView toolbarAccountTextView;
+    private Firebase myFirebaseRef;
+    private String email;
+    private String emailEncoded;
+    private String emailDecoded;
     //private String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +81,7 @@ public class HomeActivity extends  FragmentActivity {
         // check if someone is logged in or not
 
         setContentView(R.layout.activity_home);
-        modelObject.initializeLists();
+        setOthers();
         setFlipper();
         setHomeImageView();
         setShoppingCartImageView();
@@ -85,6 +95,14 @@ public class HomeActivity extends  FragmentActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             viewPager.setAdapter(new MyAdapter(fragmentManager));
 
+    }
+
+    private void setOthers(){
+        myFirebaseRef = new Firebase("https://rocket-mandi.firebaseio.com/");
+        email = getIntent().getStringExtra("email");
+        emailEncoded = getIntent().getStringExtra("emailEncoded");
+        modelObject = new RocketMandiModel(emailEncoded);
+        modelObject.initializeLists();
     }
 
     private void setLayoutsAndActionListeners(){
@@ -380,10 +398,14 @@ public class HomeActivity extends  FragmentActivity {
         checkOutButtonInShoppingCart = (Button) findViewById(R.id.check_out_button_in_shopping_cart);
 
         //Text View in My account flipper.
-        editInMyAccount = (TextView) findViewById(R.id.edit_text_at_top_in_account);
-        nameTextViewInAccount = (EditText)findViewById(R.id.name_in_my_account_text);
-        phoneTextViewInAccount = (EditText) findViewById(R.id.phone_in_my_account_text);
-        deliveryLocationTextViewInAccount = (TextView) findViewById(R.id.delivery_location_text_in_my_account);
+        nameTextViewInAccount = (TextView)findViewById(R.id.name_in_my_account_text);
+        phoneTextViewInAccount = (TextView) findViewById(R.id.phone_in_my_account_text);
+        editNameImageViewInAccount = (ImageView) findViewById(R.id.edit_name_symbol_in_my_account);
+        editPhoneImageViewInAccount = (ImageView) findViewById(R.id.edit_phone_symbol_in_my_account);
+        editEmailTextViewInAccount = (TextView) findViewById(R.id.edit_email_text_view_in_my_account);
+        editEmailImageViewInAccount = (ImageView) findViewById(R.id.edit_email_symbol_in_my_account);
+        editPasswordTextViewInAccount = (TextView) findViewById(R.id.edit_password_text_view_in_my_account);
+        deliveryAreaSpinnerInAccount = (Spinner) findViewById(R.id.delivery_area_spinner);
         deliveryLocationSpinnerInAccount = (Spinner) findViewById(R.id.delivery_location_spinner_in_my_account);
         myOrdersTextViewInAccount = (TextView) findViewById(R.id.my_order_text_in_my_account);
         logOutTextViewInAccount = (TextView) findViewById(R.id.log_out_text_view);
@@ -409,11 +431,11 @@ public class HomeActivity extends  FragmentActivity {
     private void setUpAccountClass(){
         setUpMyOrders();
         setUpLogOut();
-        myAccount = new MyAccount(editInMyAccount,nameTextViewInAccount, phoneTextViewInAccount
-               ,deliveryLocationTextViewInAccount,deliveryLocationSpinnerInAccount,
-                 modelObject, HomeActivity.this);
-
+        myAccount = new MyAccount(nameTextViewInAccount , phoneTextViewInAccount , editNameImageViewInAccount , editPhoneImageViewInAccount,
+                editEmailTextViewInAccount, editPasswordTextViewInAccount,editEmailImageViewInAccount , deliveryAreaSpinnerInAccount,
+                deliveryLocationSpinnerInAccount, modelObject, HomeActivity.this , email);
     }
+
     private void setUpMyOrders(){
 
         myOrdersTextViewInAccount.setOnClickListener(new View.OnClickListener() {
@@ -446,7 +468,8 @@ public class HomeActivity extends  FragmentActivity {
         logOutTextViewInAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // log out from database
+                // check internet connection
+                myFirebaseRef.unauth();
                 startActivity(new Intent(HomeActivity.this, LogInActivity.class));
                 HomeActivity.this.finish();
             }

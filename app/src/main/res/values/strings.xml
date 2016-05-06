@@ -30,8 +30,25 @@
     <string name="title_line_one_at_create_password">No turning back, just one step away</string>
     <string name="title_line_two_at_create_password">from getting fresh Fruits and Vegetables</string>
 
-    <string name="edit_text_in_my_account">EDIT</string>
+    <string name="edit_text_in_my_account">Name and Number</string>
     <string name="pick_up_point_text_in_my_account">PickUpPoint</string>
     <string name="my_orders_text_in_my_account">My Orders</string>
     <string name="log_out_text_in_my_account">Log Out</string>
+    <string name="enter_email_hint_text">Enter Email</string>
+    <string name="email_and_password_heading_at_top">Email and Password</string>
+    <string name="change_password_text_in_my_account">Change Password</string>
+
+    <string name="whats_app_helpline_text">WhatsApp- 8447788214</string>
+
+    <string name="enter_new_name_in_change_customer_name">Enter new name</string>
+    <string name="save_new_name_button_text_at_change_customer_name">SAVE</string>
+    <string name="cancel_button_text_at_change_customer_name">CANCEL</string>
+
+    <string name="enter_new_number_text">Enter new number</string>
+    <string name="enter_new_email_text">Enter new email</string>
+    <string name="enter_present_password_text">Enter present password</string>
+
+    <string name="forgot_password_text">We will send new password to your email</string>
+    <string name="submit_button_text">SUBMIT</string>
+
 </resources>
