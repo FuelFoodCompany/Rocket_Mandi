@@ -6,14 +6,18 @@ package com.thefuelcompany.rocketmandi;
  * for Rocket Mandi
  */
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -27,16 +31,18 @@ import android.widget.ViewFlipper;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LogInActivity extends AppCompatActivity {
+import com.msg91.sendotp.library.Config;
+import com.msg91.sendotp.library.SendOtpVerification;
+import com.msg91.sendotp.library.Verification;
+import com.msg91.sendotp.library.VerificationListener;
+
+
+
+public class LogInActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, VerificationListener {
 
     // Fields and Strings at Log In Page
     private EditText enterEmailForLogInEditText;
@@ -62,7 +68,6 @@ public class LogInActivity extends AppCompatActivity {
     private TextView backTextViewAtOTP;
     private TextView resendOTP;
     private String otpEntered;
-    private String otpSent;
 
     // Fields and Strings at Sign Up Page Three (Email and Password)
     private String createPasswordAtSignUp;
@@ -82,6 +87,12 @@ public class LogInActivity extends AppCompatActivity {
     private String noInternetConnectionMessage;
     private RelativeLayout loadingPanelLayoutAtLogIn;
 
+    //OTP
+    private String countryCode;
+    private Verification otpVerification;
+    private static final String TAG = Verification.class.getSimpleName();
+    private String otpReturnMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +109,7 @@ public class LogInActivity extends AppCompatActivity {
         enterEmptyFieldsMessage = "Please fill empty field(s) and try again";
         noInternetConnectionTitle = "No Internet Connection";
         noInternetConnectionMessage  ="Your internet is not working properly. \n Please try again";
+        countryCode = "91";
         loadingPanelLayoutAtLogIn = (RelativeLayout) findViewById(R.id.loadingPanel);
         loadingPanelLayoutAtLogIn.setVisibility(View.GONE);
     }
@@ -153,7 +165,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    private void logInUser(String email , String password){
+    private void logInUser(String email, String password) {
 
         myFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
@@ -309,12 +321,19 @@ public class LogInActivity extends AppCompatActivity {
                 return "Please enter 10 digit phone number";
             } else {
                 char[] chars = phone.toCharArray();
-                for(int i=0; i<chars.length; i++){
-                    char c = chars[i];
-                    if(Character.isDigit(c)){
-                    }else {
-                        return "Phone number can only have digits" ;
-                    }
+                char firstNumber = chars[0];
+                int firstNum = Character.getNumericValue(firstNumber);
+                if(firstNum == 7 || firstNum == 8 || firstNum == 9){
+                    for(int i=0; i<chars.length; i++){
+                        char c = chars[i];
+                        if(Character.isDigit(c)){
+
+                        }
+                        else {
+                            return "Phone number can only have digits" ;
+                        }}
+                }else {
+                    return "Phone number can start only with 7,8 or 9";
                 }
                 return "true";
             }
@@ -334,7 +353,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    private void setSubmitOTPButton(){
+    private void setSubmitOTPButton() {
         submitOTPButton = (Button) findViewById(R.id.login_submit_button);
         setOTPEditText();
         submitOTPButton.setOnClickListener(new View.OnClickListener() {
@@ -355,11 +374,11 @@ public class LogInActivity extends AppCompatActivity {
 
     private void setOTPEditText(){
         logInOTPEditText = (EditText) findViewById(R.id.login_OTP_edit_text);
-        logInOTPEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        logInOTPEditText.setInputType(InputType.TYPE_CLASS_PHONE);
     }
 
     private void setOTPEntered(){
-        otpEntered = logInOTPEditText.getText().toString();
+        otpEntered = logInOTPEditText.getText().toString().trim();
     }
 
     private void setBackTextViewAtOTPScreen(){
@@ -460,7 +479,7 @@ public class LogInActivity extends AppCompatActivity {
     private String checkPasswordMatch(){
         if(createPasswordAtSignUp.equalsIgnoreCase(repeatPasswordAtSignUp)){
             return "true";
-        }else {
+        } else {
             return "Passwords do not match. \n Please try again.";
         }
     }
@@ -490,7 +509,7 @@ public class LogInActivity extends AppCompatActivity {
      * ********************************************************************************
      */
 
-    private void createNewAccountInFirebase(final String email , String password){
+    private void createNewAccountInFirebase(final String email, String password) {
         myFirebaseRef.createUser(email
                 , password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
@@ -571,18 +590,48 @@ public class LogInActivity extends AppCompatActivity {
      */
 
     private void sendOTP(){
+        final Dialog dialog = new Dialog(LogInActivity.this);
 
+        dialog.setContentView(R.layout.waiting_circle_for_dialog);
+        dialog.setTitle("`Sending OTP");
+        dialog.show();
+        Config config = SendOtpVerification.config().context(LogInActivity.this)
+                .build();
+            otpVerification = SendOtpVerification.createSmsVerification(config, phoneNumberAtSignUP, this, countryCode);
+            otpVerification.initiate();
+        dialog.dismiss();
     }
 
     private String checkOTP(){
-        // compate otp entered and sent
-        if(true){
-            return "true";
-        }else {
-            return "OTP entered by you is incorrect. \n  Please try again";
-        }
+        final Dialog dialog = new Dialog(LogInActivity.this);
+        dialog.setContentView(R.layout.waiting_circle_for_dialog);
+        dialog.setTitle("Checking OTP");
+        dialog.show();
+        otpVerification.verify(otpEntered);
+        dialog.dismiss();
+        return otpReturnMessage;
     }
 
+    @Override
+    public void onInitiated(String response) {
+        Log.d(TAG, "Initialized!");
+    }
 
-    
+    @Override
+    public void onInitiationFailed(Exception paramException) {
+        Log.e(TAG, "Verification initialization failed: " + paramException.getMessage());
+    }
+
+    @Override
+    public void onVerified(String response) {
+        Log.d(TAG, "Verified!\n" + response);
+        otpReturnMessage = "true";
+        Toast.makeText(LogInActivity.this, "Thank you :-) You Phone number is verified now" , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVerificationFailed(Exception paramException) {
+        Log.e(TAG, "Verification failed: " + paramException.getMessage());
+        otpReturnMessage = "Please, enter otp again OR. \n Check your internet connection.";
+    }
 }

@@ -1,11 +1,15 @@
 package com.thefuelcompany.rocketmandi;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,8 +18,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.msg91.sendotp.library.Config;
+import com.msg91.sendotp.library.SendOtpVerification;
+import com.msg91.sendotp.library.Verification;
+import com.msg91.sendotp.library.VerificationListener;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,7 +36,7 @@ import static android.support.v4.app.ActivityCompat.startActivity;
 /**
  * Created by pradumanpraduman on 20/04/16.
  */
-public class MyAccount {
+public class MyAccount implements  ActivityCompat.OnRequestPermissionsResultCallback, VerificationListener {
 
     // Required by Constructor
     private TextView nameTextViewInAccount;
@@ -68,6 +77,12 @@ public class MyAccount {
     private EditText editTextOldPassword;
     private EditText editTextNewEmail;
 
+    private static final String TAG = Verification.class.getSimpleName();
+    private String otpReturnMessage;
+    private Verification otpVerification;
+    private String countryCode;
+    private String otpEntered;
+
 
     public MyAccount(TextView nameTextViewInAccount, TextView phoneTextViewInAccount,ImageView editNameImageViewInAccount,
                      ImageView editNumberImageViewInAccount, TextView emailTextViewInAccount, TextView passwordTextViewInAccount,
@@ -88,6 +103,7 @@ public class MyAccount {
         this.email = email;
         myFirebaseRef = new Firebase("https://rocket-mandi.firebaseio.com/");
         fillEmptyFieldsMessage = "Please fill empty fields \n and try again";
+        countryCode = "91";
         setUpNameAndPhoneTextView();
         setUpEmailAndPasswordTextView();
         setUpSpinners();
@@ -190,16 +206,9 @@ public class MyAccount {
         newPhone = editTextForNewNumberPopUp.getText().toString();
         String message4Phone = checkPhone(newPhone);
         if (message4Phone.equalsIgnoreCase("true")){
-            // send otp
-            String message4OTP = checkOTPCodeEntered();
-            if(message4OTP.equalsIgnoreCase("true")){
-                dialog.setContentView(R.layout.waiting_circle_for_dialog);
-                modelObject.setNewPhoneNumber(newPhone);
-                phoneTextViewInAccount.setText(newPhone);
-                dialog.dismiss();
-            }else {
-                showErrorDialogue("Incorrect OTP" , message4OTP);
-            }
+            dialog.setContentView(R.layout.waiting_circle_for_dialog);
+             sendOTP();
+             dialog.dismiss();
         }else {
             dialog.dismiss();
             showErrorDialogue("Invalid Number" , message4Phone);
@@ -532,18 +541,120 @@ public class MyAccount {
     }
 
     private void sendOTP(){
-        // send it to newPhone
-        // popup window to enter otp
-        // get otp entered
+        final Dialog dialog = new Dialog(context);
+
+        dialog.setContentView(R.layout.forgot_password_dialogue);
+        dialog.setTitle("Sending OTP");
+        dialog.show();
+        Config config = SendOtpVerification.config().context(context)
+                .build();
+        otpVerification = SendOtpVerification.createSmsVerification(config, newPhone, this, countryCode);
+        otpVerification.initiate();
+        dialog.dismiss();
+
+        showDialogToEnterOTP();
+
     }
 
-    private String checkOTPCodeEntered(){
-        // match with otp entered and otp sent
-        if(true){
-            return "true";
-        }else {
-            return "OTP entered by you is incorrect."  + "Please try again. " ;
-        }
+    private void showDialogToEnterOTP(){
 
+        final Dialog dialog = new Dialog(context);
+
+        dialog.setContentView(R.layout.submit_otp_dialogue);
+        dialog.setTitle("Enter OTP");
+
+        final EditText otpEditText = (EditText) dialog.findViewById(R.id.enter_OTP_edit_text_at_enter_OTP_dialogue);
+
+        Button btnSave          = (Button) dialog.findViewById(R.id.submit_OTP_button_at_submit_OTP_dialogue);
+        Button btnCancel        = (Button) dialog.findViewById(R.id.cancel_OTP_button_at_submit_OTP_dialogue);
+        dialog.show();
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                otpEntered = otpEditText.getText().toString();
+                if (!(otpEntered.isEmpty())) {
+                    dialog.dismiss();
+                    String message4OTP = checkOTPCodeEntered();
+                    Toast.makeText(context , message4OTP+ "  :::::"  , Toast.LENGTH_SHORT).show();
+                 /**   if (message4OTP.equalsIgnoreCase("true")) {
+                        dialog.setContentView(R.layout.waiting_circle_for_dialog);
+                        modelObject.setNewPhoneNumber(newPhone);
+                        phoneTextViewInAccount.setText(newPhone);
+                        dialog.dismiss();
+                    } else {
+                        showErrorDialogue("Wrong OTP", message4OTP);
+                    }*/
+
+                } else {
+                    showErrorDialogue("Invalid OTP", "Please enter OTP sent to you");
+                }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+
+    private String checkOTPCodeEntered(){
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.waiting_circle_for_dialog);
+        dialog.setTitle("Checking OTP");
+        otpVerification.verify(otpEntered);
+        dialog.dismiss();
+        return otpReturnMessage;
+    }
+
+    @Override
+    public void onInitiated(String response) {
+        Log.d(TAG, "Initialized!");
+    }
+
+    @Override
+    public void onInitiationFailed(Exception paramException) {
+        Log.e(TAG, "Verification initialization failed: " + paramException.getMessage());
+
+    }
+
+    @Override
+    public void onVerified(String response) {
+        Log.d(TAG, "Verified!\n" + response);
+        otpReturnMessage = "true";
+        Toast.makeText(context , "Thank you :-) You Phone number is verified now" , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVerificationFailed(Exception paramException) {
+        Log.e(TAG, "Verification failed: " + paramException.getMessage());
+        otpReturnMessage = "Please, enter otp again OR. \n Check your internet connection.";
+    }
+
+    /**
+     * Callback for the result from requesting permissions. This method
+     * is invoked for every call on {@link #requestPermissions(Activity,
+     * String[], int)}.
+     * <p>
+     * <strong>Note:</strong> It is possible that the permissions request interaction
+     * with the user is interrupted. In this case you will receive empty permissions
+     * and results arrays which should be treated as a cancellation.
+     * </p>
+     *
+     * @param requestCode  The request code passed in {@link #requestPermissions(
+     *Activity, String[], int)}
+     * @param permissions  The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *                     which is either {@link PackageManager#PERMISSION_GRANTED}
+     *                     or {@link PackageManager#PERMISSION_DENIED}. Never null.
+     * @see #requestPermissions(Activity, String[], int)
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        otpReturnMessage = "SHIT";
+        Toast.makeText(context, "Something happened here" , Toast.LENGTH_SHORT).show();
     }
 }

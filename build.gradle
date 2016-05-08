@@ -3,6 +3,9 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "http://dl.bintray.com/rakshitsoni02/Android-Libs"
+        }
     }
 
 
