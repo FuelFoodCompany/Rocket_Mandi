@@ -360,14 +360,7 @@ public class LogInActivity extends AppCompatActivity implements ActivityCompat.O
             @Override
             public void onClick(View v) {
                 setOTPEntered();
-                String message4OTP = checkOTP();
-                if (message4OTP.equalsIgnoreCase("true")) {
-                    setEnterAndRepeatPasswordForSignUpEditText();
-                    setCreateAccountTextView();
-                    LogInActivity.this.LogInViewFlipper.showNext();
-                } else {
-                    showErrorDialogue("Wrong OTP", message4OTP);
-                }
+                 checkOTP();
             }
         });
     }
@@ -602,36 +595,42 @@ public class LogInActivity extends AppCompatActivity implements ActivityCompat.O
         dialog.dismiss();
     }
 
-    private String checkOTP(){
+    private void checkOTP(){
         final Dialog dialog = new Dialog(LogInActivity.this);
         dialog.setContentView(R.layout.waiting_circle_for_dialog);
         dialog.setTitle("Checking OTP");
         dialog.show();
         otpVerification.verify(otpEntered);
         dialog.dismiss();
-        return otpReturnMessage;
     }
 
     @Override
     public void onInitiated(String response) {
         Log.d(TAG, "Initialized!");
+        Toast.makeText(LogInActivity.this , "OTP has been sent. " +
+                "It is valid only for 60 second ( 1 Minute)." , Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onInitiationFailed(Exception paramException) {
         Log.e(TAG, "Verification initialization failed: " + paramException.getMessage());
+        showErrorDialogue("OTP not sent" , "OTP not has been sent. \n Please try again.\n"
+                +paramException.getMessage().toString());
     }
 
     @Override
     public void onVerified(String response) {
         Log.d(TAG, "Verified!\n" + response);
-        otpReturnMessage = "true";
+        setEnterAndRepeatPasswordForSignUpEditText();
+        setCreateAccountTextView();
+        LogInActivity.this.LogInViewFlipper.showNext();
         Toast.makeText(LogInActivity.this, "Thank you :-) You Phone number is verified now" , Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onVerificationFailed(Exception paramException) {
         Log.e(TAG, "Verification failed: " + paramException.getMessage());
-        otpReturnMessage = "Please, enter otp again OR. \n Check your internet connection.";
+        showErrorDialogue("Wrong OTP", "Please, enter otp again OR. \n Check your internet connection.\n" +
+        paramException.getMessage().toString());
     }
 }

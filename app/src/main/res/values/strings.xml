@@ -48,7 +48,14 @@
     <string name="enter_new_email_text">Enter new email</string>
     <string name="enter_present_password_text">Enter present password</string>
 
+    <string name="enter_new_password_text">Enter new password</string>
+
     <string name="forgot_password_text">We will send new password to your email</string>
     <string name="submit_button_text">SUBMIT</string>
 
+    <string name="order_number_text">Order No:</string>
+    <string name="date_text">Date of Order:</string>
+    <string name="total_text">Total Bill:</string>
+    <string name="delivery_status_text">Delivery: </string>
+    <string name="payment_status">Payment Status:</string>
 </resources>

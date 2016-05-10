@@ -5,7 +5,7 @@
 
     <EditText
         android:id="@+id/enter_OTP_edit_text_at_enter_OTP_dialogue"
-        android:hint="@string/enter_new_email_text"
+        android:hint="@string/otp_text_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLength="4"

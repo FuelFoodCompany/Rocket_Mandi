@@ -485,13 +485,19 @@ public class MyAccount implements  ActivityCompat.OnRequestPermissionsResultCall
                 return "Please enter 10 digit phone number";
             } else {
                 char[] chars = phone.toCharArray();
-                for(int i=0; i<chars.length; i++){
-                    char c = chars[i];
-                    if(Character.isDigit(c)){
-                        // do nothing
-                    }else {
-                        return "Please enter a valid number";
-                    }
+                char firstNumber = chars[0];
+                int firstNum = Character.getNumericValue(firstNumber);
+                if(firstNum == 7 || firstNum == 8 || firstNum == 9){
+                    for(int i=0; i<chars.length; i++){
+                        char c = chars[i];
+                        if(Character.isDigit(c)){
+
+                        }
+                        else {
+                            return "Phone number can only have digits" ;
+                        }}
+                }else {
+                    return "Phone number can start only with 7,8 or 9";
                 }
                 return "true";
             }
@@ -574,20 +580,9 @@ public class MyAccount implements  ActivityCompat.OnRequestPermissionsResultCall
             public void onClick(View v) {
                 otpEntered = otpEditText.getText().toString();
                 if (!(otpEntered.isEmpty())) {
-                    dialog.dismiss();
-                    String message4OTP = checkOTPCodeEntered();
-                    Toast.makeText(context , message4OTP+ "  :::::"  , Toast.LENGTH_SHORT).show();
-                 /**   if (message4OTP.equalsIgnoreCase("true")) {
-                        dialog.setContentView(R.layout.waiting_circle_for_dialog);
-                        modelObject.setNewPhoneNumber(newPhone);
-                        phoneTextViewInAccount.setText(newPhone);
-                        dialog.dismiss();
-                    } else {
-                        showErrorDialogue("Wrong OTP", message4OTP);
-                    }*/
-
+                    checkOTPCodeEntered();
                 } else {
-                    showErrorDialogue("Invalid OTP", "Please enter OTP sent to you");
+                    showErrorDialogue("Empty fields", "Please enter OTP sent to you");
                 }
             }
         });
@@ -601,23 +596,26 @@ public class MyAccount implements  ActivityCompat.OnRequestPermissionsResultCall
     }
 
 
-    private String checkOTPCodeEntered(){
+    private void checkOTPCodeEntered(){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.waiting_circle_for_dialog);
         dialog.setTitle("Checking OTP");
         otpVerification.verify(otpEntered);
         dialog.dismiss();
-        return otpReturnMessage;
     }
 
     @Override
     public void onInitiated(String response) {
         Log.d(TAG, "Initialized!");
+        Toast.makeText(context , "OTP has been sent. " +
+                "It is valid only for 60 second ( 1 Minute)." , Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onInitiationFailed(Exception paramException) {
         Log.e(TAG, "Verification initialization failed: " + paramException.getMessage());
+        showErrorDialogue("OTP not sent" , "OTP not has been sent. \n Please try again."+
+        paramException.getMessage().toString());
 
     }
 
@@ -626,12 +624,18 @@ public class MyAccount implements  ActivityCompat.OnRequestPermissionsResultCall
         Log.d(TAG, "Verified!\n" + response);
         otpReturnMessage = "true";
         Toast.makeText(context , "Thank you :-) You Phone number is verified now" , Toast.LENGTH_SHORT).show();
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.waiting_circle_for_dialog);
+        modelObject.setNewPhoneNumber(newPhone);
+        phoneTextViewInAccount.setText(newPhone);
+        dialog.dismiss();
     }
 
     @Override
     public void onVerificationFailed(Exception paramException) {
         Log.e(TAG, "Verification failed: " + paramException.getMessage());
-        otpReturnMessage = "Please, enter otp again OR. \n Check your internet connection.";
+        showErrorDialogue("Wrong OTP", "Please, enter otp again OR. \n Check your internet connection.\n"+
+        paramException.getMessage().toString());
     }
 
     /**

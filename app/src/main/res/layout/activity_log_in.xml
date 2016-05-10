@@ -381,7 +381,8 @@
                android:textSize="@dimen/log_in_fields_text_size"
                android:textColor="@color/colorBlack"
                android:hint="@string/create_password_text"
-               android:inputType="textPassword"/>
+               android:inputType="textPassword"
+               android:maxLength="20"/>
 
            <EditText
                android:id="@+id/login_signup_repeat_password_edit_text"
@@ -390,7 +391,8 @@
                android:textSize="@dimen/log_in_fields_text_size"
                android:textColor="@color/colorBlack"
                android:hint="@string/repeat_password_text"
-               android:inputType="textPassword"/>
+               android:inputType="textPassword"
+               android:maxLength="20"/>
 
            <Button
                android:id="@+id/login_sign_up_create_account_button"

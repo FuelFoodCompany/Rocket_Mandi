@@ -30,10 +30,9 @@ public class MyOrders extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_orders);
+        setContentView(R.layout.content_my_orders);
         populateListOfAdapter();
         setAdapter();
-        setMetrics();
         setCloseButtonActionListener();
     }
 
@@ -93,18 +92,6 @@ public class MyOrders extends Activity {
 
             return convertView;
         }
-    }
-
-
-
-    private void setMetrics(){
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-
-        getWindow().setLayout(width*9 , height*9);
     }
 
     private void setCloseButtonActionListener(){

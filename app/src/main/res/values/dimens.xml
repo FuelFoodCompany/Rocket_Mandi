@@ -31,5 +31,6 @@
     <dimen name="edit_text_in_my_account_width">270dp</dimen>
     <dimen name="edit_symbol_width">30dp</dimen>
 
-
+    <dimen name="my_order_list_view__elements_height">35dp</dimen>
+    <dimen name="my_order_list_view__elements_width">100dp</dimen>
 </resources>
